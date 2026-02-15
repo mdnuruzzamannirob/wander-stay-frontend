@@ -1,27 +1,23 @@
-"use client";
+'use client';
 
-import ButtonComp from "@/components/shared/ButtonComp";
-import Logo from "@/components/shared/Logo";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import { AlertCircle, Eye, EyeOff } from "lucide-react";
-import { ResetPasswordFormData, resetPasswordSchema } from "@/lib/schemas/auth";
-import { useResetPasswordMutation } from "@/store/features/auth/authApi";
+import ButtonComp from '@/components/shared/ButtonComp';
+import Logo from '@/components/shared/Logo';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { ResetPasswordFormData, resetPasswordSchema } from '@/lib/schemas/auth';
+import { useResetPasswordMutation } from '@/store/features/auth/authApi';
 
 const ResetPasswordForm = () => {
   const router = useRouter();
   const [email] = useState<string>(() =>
-    typeof window !== "undefined"
-      ? (sessionStorage.getItem("resetPasswordEmail") ?? "")
-      : "",
+    typeof window !== 'undefined' ? (sessionStorage.getItem('resetPasswordEmail') ?? '') : '',
   );
   const [otp] = useState<string>(() =>
-    typeof window !== "undefined"
-      ? (sessionStorage.getItem("resetPasswordOTP") ?? "")
-      : "",
+    typeof window !== 'undefined' ? (sessionStorage.getItem('resetPasswordOTP') ?? '') : '',
   );
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -36,24 +32,24 @@ const ResetPasswordForm = () => {
     control,
   } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema as any),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const newPassword = useWatch({
     control,
-    name: "newPassword",
-    defaultValue: "",
+    name: 'newPassword',
+    defaultValue: '',
   });
 
   useEffect(() => {
     if (!email || !otp) {
-      router.push("/forgot-password");
+      router.push('/forgot-password');
     }
   }, [email, otp, router]);
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/sign-in");
+      router.push('/sign-in');
     }
   }, [isSuccess, router]);
 
@@ -72,24 +68,22 @@ const ResetPasswordForm = () => {
       <div className="border-brand-100 w-full max-w-120 rounded-xl border p-8 shadow-sm">
         <div className="mb-5 flex flex-col items-center text-center">
           <Logo />
-          <h2 className="text-primary mt-3 text-2xl font-semibold">
-            Reset Password
-          </h2>
-          <p className="text-sm text-slate-500">Create a new secure password</p>
+          <h2 className="text-primary mt-3 text-2xl font-semibold">Reset Password</h2>
+          <p className="text-muted-foreground text-sm">Create a new secure password</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <label
               htmlFor="newPassword"
-              className="mb-1 block text-sm font-medium text-slate-500"
+              className="text-muted-foreground mb-1 block text-sm font-medium"
             >
               New password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
-                {...register("newPassword")}
-                type={showPassword ? "text" : "password"}
+                {...register('newPassword')}
+                type={showPassword ? 'text' : 'password'}
                 id="newPassword"
                 placeholder="Enter new password"
                 disabled={isLoading || isSubmitting}
@@ -116,40 +110,18 @@ const ResetPasswordForm = () => {
             </div>
 
             {isPasswordFocused && (
-              <div className="mt-2 space-y-1 text-xs text-slate-500">
-                <p
-                  className={
-                    newPassword && /[A-Z]/.test(newPassword)
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
+              <div className="text-muted-foreground mt-2 space-y-1 text-xs">
+                <p className={newPassword && /[A-Z]/.test(newPassword) ? 'text-green-600' : ''}>
                   ✓ At least one uppercase letter
                 </p>
-                <p
-                  className={
-                    newPassword && /[a-z]/.test(newPassword)
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
+                <p className={newPassword && /[a-z]/.test(newPassword) ? 'text-green-600' : ''}>
                   ✓ At least one lowercase letter
                 </p>
-                <p
-                  className={
-                    newPassword && /[0-9]/.test(newPassword)
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
+                <p className={newPassword && /[0-9]/.test(newPassword) ? 'text-green-600' : ''}>
                   ✓ At least one number
                 </p>
                 <p
-                  className={
-                    newPassword && /[!@#$%^&*]/.test(newPassword)
-                      ? "text-green-600"
-                      : ""
-                  }
+                  className={newPassword && /[!@#$%^&*]/.test(newPassword) ? 'text-green-600' : ''}
                 >
                   ✓ At least one special character (!@#$%^&*)
                 </p>
@@ -160,14 +132,14 @@ const ResetPasswordForm = () => {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="mb-1 block text-sm font-medium text-slate-500"
+              className="text-muted-foreground mb-1 block text-sm font-medium"
             >
               Confirm password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
-                {...register("confirmPassword")}
-                type={showConfirmPassword ? "text" : "password"}
+                {...register('confirmPassword')}
+                type={showConfirmPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 placeholder="Confirm new password"
                 disabled={isLoading || isSubmitting}
@@ -204,12 +176,9 @@ const ResetPasswordForm = () => {
           </ButtonComp>
         </form>
 
-        <p className="mt-5 text-center text-sm text-slate-500">
-          Back to{" "}
-          <Link
-            href="/sign-in"
-            className="text-primary font-medium transition hover:underline"
-          >
+        <p className="text-muted-foreground mt-5 text-center text-sm">
+          Back to{' '}
+          <Link href="/sign-in" className="text-primary font-medium transition hover:underline">
             Sign In
           </Link>
         </p>

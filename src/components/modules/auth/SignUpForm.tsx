@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import ButtonComp from "@/components/shared/ButtonComp";
-import Logo from "@/components/shared/Logo";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm, useController, useWatch } from "react-hook-form";
-import { AlertCircle, Eye, EyeOff } from "lucide-react";
-import { SignUpFormData, signUpSchema } from "@/lib/schemas/auth";
-import { useSignUpMutation } from "@/store/features/auth/authApi";
+import ButtonComp from '@/components/shared/ButtonComp';
+import Logo from '@/components/shared/Logo';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm, useController, useWatch } from 'react-hook-form';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { SignUpFormData, signUpSchema } from '@/lib/schemas/auth';
+import { useSignUpMutation } from '@/store/features/auth/authApi';
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -30,26 +30,26 @@ const SignUpForm = () => {
     control,
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema as any),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { field: agreeTermsField } = useController({
-    name: "agreeTerms",
+    name: 'agreeTerms',
     control,
     defaultValue: false,
   });
 
   const password = useWatch({
     control,
-    name: "password",
-    defaultValue: "",
+    name: 'password',
+    defaultValue: '',
   });
 
   const isLoading = isSigningUp || isSubmitting;
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/sign-in");
+      router.push('/sign-in');
     }
   }, [isSuccess, router]);
 
@@ -71,10 +71,8 @@ const SignUpForm = () => {
         {/* Title */}
         <div className="mb-5 flex flex-col items-center text-center">
           <Logo />
-          <h2 className="text-primary mt-3 text-2xl font-semibold">
-            Join MarketPlace
-          </h2>
-          <p className="text-sm text-slate-500">
+          <h2 className="text-primary mt-3 text-2xl font-semibold">Join MarketPlace</h2>
+          <p className="text-muted-foreground text-sm">
             Create your account to start buying and selling
           </p>
         </div>
@@ -85,14 +83,14 @@ const SignUpForm = () => {
           <div>
             <label
               htmlFor="fullName"
-              className="mb-1 block text-sm font-medium text-slate-500"
+              className="text-muted-foreground mb-1 block text-sm font-medium"
             >
               Full name <span className="text-red-500">*</span>
             </label>
 
             <div className="relative">
               <input
-                {...register("fullName")}
+                {...register('fullName')}
                 type="text"
                 id="fullName"
                 placeholder="John Doe"
@@ -111,16 +109,13 @@ const SignUpForm = () => {
 
           {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-sm font-medium text-slate-500"
-            >
+            <label htmlFor="email" className="text-muted-foreground mb-1 block text-sm font-medium">
               Email <span className="text-red-500">*</span>
             </label>
 
             <div className="relative">
               <input
-                {...register("email")}
+                {...register('email')}
                 type="email"
                 id="email"
                 placeholder="you@example.com"
@@ -141,15 +136,15 @@ const SignUpForm = () => {
           <div>
             <label
               htmlFor="password"
-              className="mb-1 block text-sm font-medium text-slate-500"
+              className="text-muted-foreground mb-1 block text-sm font-medium"
             >
               Password <span className="text-red-500">*</span>
             </label>
 
             <div className="relative">
               <input
-                {...register("password")}
-                type={showPassword ? "text" : "password"}
+                {...register('password')}
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Create a password"
                 disabled={isLoading}
@@ -177,35 +172,17 @@ const SignUpForm = () => {
 
             {/* Password Rules */}
             {isPasswordFocused && (
-              <div className="mt-2 space-y-1 text-xs text-slate-500">
-                <p
-                  className={
-                    password && /[A-Z]/.test(password) ? "text-green-600" : ""
-                  }
-                >
+              <div className="text-muted-foreground mt-2 space-y-1 text-xs">
+                <p className={password && /[A-Z]/.test(password) ? 'text-green-600' : ''}>
                   ✓ At least one uppercase letter
                 </p>
-                <p
-                  className={
-                    password && /[a-z]/.test(password) ? "text-green-600" : ""
-                  }
-                >
+                <p className={password && /[a-z]/.test(password) ? 'text-green-600' : ''}>
                   ✓ At least one lowercase letter
                 </p>
-                <p
-                  className={
-                    password && /[0-9]/.test(password) ? "text-green-600" : ""
-                  }
-                >
+                <p className={password && /[0-9]/.test(password) ? 'text-green-600' : ''}>
                   ✓ At least one number
                 </p>
-                <p
-                  className={
-                    password && /[!@#$%^&*]/.test(password)
-                      ? "text-green-600"
-                      : ""
-                  }
-                >
+                <p className={password && /[!@#$%^&*]/.test(password) ? 'text-green-600' : ''}>
                   ✓ At least one special character (!@#$%^&*)
                 </p>
               </div>
@@ -216,15 +193,15 @@ const SignUpForm = () => {
           <div>
             <label
               htmlFor="confirmPassword"
-              className="mb-1 block text-sm font-medium text-slate-500"
+              className="text-muted-foreground mb-1 block text-sm font-medium"
             >
               Confirm password <span className="text-red-500">*</span>
             </label>
 
             <div className="relative">
               <input
-                {...register("confirmPassword")}
-                type={showConfirmPassword ? "text" : "password"}
+                {...register('confirmPassword')}
+                type={showConfirmPassword ? 'text' : 'password'}
                 id="confirmPassword"
                 placeholder="Confirm your password"
                 disabled={isLoading}
@@ -251,7 +228,7 @@ const SignUpForm = () => {
 
           {/* Terms */}
           <div>
-            <label className="flex cursor-pointer items-start gap-3 text-sm text-slate-500 select-none">
+            <label className="text-muted-foreground flex cursor-pointer items-start gap-3 text-sm select-none">
               <Checkbox
                 id="agreeTerms"
                 checked={agreeTermsField.value}
@@ -261,14 +238,14 @@ const SignUpForm = () => {
               />
 
               <span>
-                I agree to the{" "}
+                I agree to the{' '}
                 <Link
                   href="/terms-and-condition"
                   className="text-primary font-medium transition hover:underline"
                 >
                   Terms & Conditions
-                </Link>{" "}
-                and{" "}
+                </Link>{' '}
+                and{' '}
                 <Link
                   href="/privacy-policy"
                   className="text-primary font-medium transition hover:underline"
@@ -302,16 +279,12 @@ const SignUpForm = () => {
         {/* Divider */}
         <div className="my-5 flex items-center gap-3">
           <div className="bg-brand-100 h-px flex-1" />
-          <span className="text-xs text-slate-500">or continue with</span>
+          <span className="text-muted-foreground text-xs">or continue with</span>
           <div className="bg-brand-100 h-px flex-1" />
         </div>
 
         {/* Google */}
-        <Button
-          variant="outline"
-          className="h-11 w-full gap-2"
-          disabled={isLoading}
-        >
+        <Button variant="outline" className="h-11 w-full gap-2" disabled={isLoading}>
           <Image
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
             alt="Google"
@@ -322,8 +295,8 @@ const SignUpForm = () => {
         </Button>
 
         {/* Sign In link */}
-        <p className="mt-5 text-center text-sm text-slate-500">
-          Already have an account?{" "}
+        <p className="text-muted-foreground mt-5 text-center text-sm">
+          Already have an account?{' '}
           <Link
             href="/sign-in"
             className="text-primary cursor-pointer font-medium transition hover:underline"

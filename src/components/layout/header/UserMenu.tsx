@@ -44,7 +44,7 @@ const UserMenu = () => {
       </PopoverTrigger>
 
       {/* Popover Content */}
-      <PopoverContent align="end" className="w-64 rounded-xl p-0">
+      <PopoverContent align="end" className="w-64 p-0">
         {/* User Info */}
         <div className="flex items-center gap-2 border-b p-3">
           <Avatar className="border-brand-100 size-10 border shadow-sm">

@@ -12,7 +12,7 @@ function FooterColumn({ title, links }: FooterColumnProps) {
   return (
     <div>
       <h3 className="text-primary mb-4 font-semibold">{title}</h3>
-      <ul className="space-y-3 text-sm text-slate-500">
+      <ul className="text-muted-foreground space-y-3 text-sm">
         {links.map((link) => (
           <li key={link.href}>
             <Link href={link.href} className="hover:text-primary w-fit font-medium transition">
@@ -27,12 +27,12 @@ function FooterColumn({ title, links }: FooterColumnProps) {
 
 export default function Footer() {
   return (
-    <footer className="border-brand-100 bg-brand-50 border-t">
+    <footer className="bg-primary/5 border-primary/10 border-t">
       <div className="app-container grid grid-cols-1 gap-8 py-14 md:grid-cols-4">
         {/* Brand */}
         <div className="space-y-3">
           <Logo />
-          <p className="max-w-xs text-sm leading-relaxed text-slate-500">
+          <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
             Buy and sell quality pre-owned items easily and securely on one trusted marketplace.
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function Footer() {
         {/* Social */}
         <div>
           <h3 className="text-primary mb-4 font-semibold">Connect With Us</h3>
-          <p className="mb-5 max-w-xs text-sm text-slate-500">
+          <p className="text-muted-foreground mb-5 max-w-xs text-sm">
             Follow our journey through the broken world on social media.
           </p>
 
@@ -64,7 +64,7 @@ export default function Footer() {
 
       <div className="border-brand-100 border-t" />
 
-      <div className="app-container py-4 text-slate-500">
+      <div className="app-container text-muted-foreground py-4">
         <small>© 2026 RELO. All rights reserved.</small>
       </div>
     </footer>

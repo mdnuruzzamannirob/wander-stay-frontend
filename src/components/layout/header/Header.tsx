@@ -35,18 +35,13 @@ export default function Navbar() {
 
   /* Render */
   return (
-    <header className="border-brand-100 sticky top-0 z-50 w-full border-b bg-white">
-      <div className="app-container flex items-center justify-between gap-3 py-4">
-        {/* Mobile Menu */}
-        <div className="lg:hidden">
-          <MobileMenu />
-        </div>
-
-        {/* Logo */}
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
+      <div className="app-container flex items-center justify-between gap-3 py-3">
+        <MobileMenu />
         <Logo />
 
         {/* Middle Actions */}
-        <div className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -74,7 +69,7 @@ export default function Navbar() {
               </Link>
             );
           })}
-        </div>
+        </nav>
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">

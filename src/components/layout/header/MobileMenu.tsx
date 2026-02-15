@@ -20,39 +20,36 @@ const MobileMenu = () => {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
+      <SheetTrigger asChild className="lg:hidden">
         <Button variant="ghost" size="icon-lg">
-          <Menu className="size-6 text-slate-500" />
+          <Menu className="text-muted-foreground size-6" />
         </Button>
       </SheetTrigger>
 
       <SheetContent side="left" className="w-72">
-        <SheetHeader className="border-b">
+        <SheetHeader className="border-b p-3">
           <SheetTitle className="flex items-center justify-between">
             <Logo />
 
-            <SheetClose className="hover:bg-brand-50 flex size-9 min-w-9 items-center justify-center rounded-md text-slate-500">
+            <SheetClose className="text-muted-foreground flex size-8 shrink-0 items-center justify-center rounded-md hover:bg-gray-100">
               <X className="size-5.5" />
             </SheetClose>
           </SheetTitle>
         </SheetHeader>
 
         {/* Mobile Nav */}
-        <nav className="flex flex-col gap-1 px-4">
+        <nav className="flex flex-col gap-1 px-3">
           {nav.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              pathname.startsWith(`${item.href}/`) ||
-              (item.slug && pathname === '/product');
+            const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                className={`rounded-md p-3 text-sm transition ${
+                className={`flex items-center gap-2 rounded-md border px-3 py-2 text-sm transition ${
                   isActive
-                    ? 'bg-brand-50 text-primary font-medium'
-                    : 'hover:bg-brand-50 text-muted-foreground'
+                    ? 'text-primary bg-primary/5 border-primary/10 font-medium'
+                    : 'hover:text-primary hover:bg-primary/5 text-muted-foreground border-transparent'
                 }`}
               >
                 {item.label}

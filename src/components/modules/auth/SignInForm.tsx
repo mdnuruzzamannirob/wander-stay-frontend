@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import ButtonComp from "@/components/shared/ButtonComp";
-import Logo from "@/components/shared/Logo";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { AlertCircle, Eye, EyeOff } from "lucide-react";
-import { SignInFormData, signInSchema } from "@/lib/schemas/auth";
-import { useSignInMutation } from "@/store/features/auth/authApi";
+import ButtonComp from '@/components/shared/ButtonComp';
+import Logo from '@/components/shared/Logo';
+import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { SignInFormData, signInSchema } from '@/lib/schemas/auth';
+import { useSignInMutation } from '@/store/features/auth/authApi';
 
 const SignInForm = () => {
   const router = useRouter();
@@ -26,14 +26,14 @@ const SignInForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema as any),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const isLoading = isSigningIn || isSubmitting;
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/");
+      router.push('/');
     }
   }, [isSuccess, router]);
 
@@ -52,27 +52,20 @@ const SignInForm = () => {
         {/* Title */}
         <div className="mb-5 flex flex-col items-center text-center">
           <Logo />
-          <h2 className="text-primary mt-3 text-2xl font-semibold">
-            Welcome Back
-          </h2>
-          <p className="text-sm text-slate-500">
-            Sign in to your account to continue
-          </p>
+          <h2 className="text-primary mt-3 text-2xl font-semibold">Welcome Back</h2>
+          <p className="text-muted-foreground text-sm">Sign in to your account to continue</p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="mb-1 block text-sm font-medium text-slate-500"
-            >
+            <label htmlFor="email" className="text-muted-foreground mb-1 block text-sm font-medium">
               Email <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
-                {...register("email")}
+                {...register('email')}
                 type="email"
                 id="email"
                 placeholder="you@example.com"
@@ -91,10 +84,7 @@ const SignInForm = () => {
           {/* Password */}
           <div>
             <div className="mb-1 flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-500"
-              >
+              <label htmlFor="password" className="text-muted-foreground block text-sm font-medium">
                 Password <span className="text-red-500">*</span>
               </label>
               <Link
@@ -106,8 +96,8 @@ const SignInForm = () => {
             </div>
             <div className="relative">
               <input
-                {...register("password")}
-                type={showPassword ? "text" : "password"}
+                {...register('password')}
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 placeholder="Enter your password"
                 disabled={isLoading}
@@ -148,16 +138,12 @@ const SignInForm = () => {
         {/* Divider */}
         <div className="my-5 flex items-center gap-3">
           <div className="bg-brand-100 h-px flex-1" />
-          <span className="text-xs text-slate-500">or continue with</span>
+          <span className="text-muted-foreground text-xs">or continue with</span>
           <div className="bg-brand-100 h-px flex-1" />
         </div>
 
         {/* Google */}
-        <Button
-          variant="outline"
-          className="h-11 w-full gap-2"
-          disabled={isLoading}
-        >
+        <Button variant="outline" className="h-11 w-full gap-2" disabled={isLoading}>
           <Image
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
             alt="Google"
@@ -168,8 +154,8 @@ const SignInForm = () => {
         </Button>
 
         {/* Sign Up link */}
-        <p className="mt-5 text-center text-sm text-slate-500">
-          Don&apos;t have an account?{" "}
+        <p className="text-muted-foreground mt-5 text-center text-sm">
+          Don&apos;t have an account?{' '}
           <Link
             href="/sign-up"
             className="text-primary cursor-pointer font-medium transition hover:underline"
