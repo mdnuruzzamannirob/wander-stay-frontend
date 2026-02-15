@@ -1,15 +1,11 @@
-import VerifyOtpForm from "@/components/modules/auth/VerifyOtpForm";
+import VerifyOtpForm from '@/components/modules/auth/VerifyOtpForm';
 
 export const metadata = {
-  title: "Verify Otp - WanderStay",
-  description: "Verify your OTP to complete the account verification process.",
+  title: 'Verify Otp - WanderStay',
+  description: 'Verify your OTP to complete the account verification process.',
 };
 const VerifyOtpPage = () => {
-  return (
-    <>
-      <VerifyOtpForm />
-    </>
-  );
+  return <VerifyOtpForm />;
 };
 
 export default VerifyOtpPage;

@@ -30,10 +30,11 @@ export default function Footer() {
     <footer className="bg-primary/5 border-primary/10 border-t">
       <div className="app-container grid grid-cols-1 gap-8 py-14 md:grid-cols-4">
         {/* Brand */}
-        <div className="space-y-3">
+        <div>
           <Logo />
-          <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
-            Buy and sell quality pre-owned items easily and securely on one trusted marketplace.
+          <p className="text-muted-foreground mt-4 max-w-xs text-sm leading-relaxed">
+            A reliable hotel booking platform for your travels. Ensuring the best prices, safe and
+            comfortable stays—wherever you go, however you travel{' '}
           </p>
         </div>
 
@@ -41,31 +42,28 @@ export default function Footer() {
         <FooterColumn title="Help" links={footerLinks.help} />
 
         {/* Legal */}
-        <FooterColumn title="Legal" links={footerLinks.legal} />
+        <FooterColumn title="Legal & Support" links={footerLinks.legal} />
 
         {/* Social */}
         <div>
           <h3 className="text-primary mb-4 font-semibold">Connect With Us</h3>
-          <p className="text-muted-foreground mb-5 max-w-xs text-sm">
-            Follow our journey through the broken world on social media.
-          </p>
-
-          <div className="flex gap-3">
-            {socialLinks.map(({ name, href, icon: Icon }) => (
-              <Button key={name} asChild className="size-8 min-w-8 rounded-full">
-                <Link href={href} aria-label={name} target="_blank">
-                  <Icon size={16} />
-                </Link>
-              </Button>
-            ))}
-          </div>
+          <p className="text-muted-foreground mb-5 max-w-xs text-sm"></p>
         </div>
       </div>
 
       <div className="border-brand-100 border-t" />
 
-      <div className="app-container text-muted-foreground py-4">
-        <small>© 2026 RELO. All rights reserved.</small>
+      <div className="app-container text-muted-foreground flex flex-col items-center justify-between gap-3 py-4 sm:flex-row">
+        <small>© 2026 wanderstay. All rights reserved.</small>
+        <div className="flex items-center gap-3">
+          {socialLinks.map(({ name, href, icon: Icon }) => (
+            <Button key={name} asChild className="size-8 min-w-8 rounded-full">
+              <Link href={href} aria-label={name} target="_blank">
+                <Icon size={16} />
+              </Link>
+            </Button>
+          ))}
+        </div>
       </div>
     </footer>
   );

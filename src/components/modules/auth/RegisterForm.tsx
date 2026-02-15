@@ -14,7 +14,7 @@ import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { SignUpFormData, signUpSchema } from '@/lib/schemas/auth';
 import { useSignUpMutation } from '@/store/features/auth/authApi';
 
-const SignUpForm = () => {
+const RegisterForm = () => {
   const router = useRouter();
 
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -66,7 +66,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-119px)] items-center justify-center py-14">
+    <div className="app-container flex min-h-[calc(100vh-83.38px)] items-center justify-center py-14">
       <div className="border-brand-100 w-full max-w-120 rounded-xl border p-8 shadow-sm">
         {/* Title */}
         <div className="mb-5 flex flex-col items-center text-center">
@@ -267,12 +267,12 @@ const SignUpForm = () => {
           <ButtonComp
             type="submit"
             loading={isLoading}
-            loadingText="Signing up..."
+            loadingText="Registering..."
             size="lg"
             disabled={isLoading}
             className="h-11 w-full"
           >
-            Sign Up
+            Register
           </ButtonComp>
         </form>
 
@@ -291,17 +291,17 @@ const SignUpForm = () => {
             width={18}
             height={18}
           />
-          Sign Up with Google
+          Register with Google
         </Button>
 
         {/* Sign In link */}
         <p className="text-muted-foreground mt-5 text-center text-sm">
           Already have an account?{' '}
           <Link
-            href="/sign-in"
+            href="/login"
             className="text-primary cursor-pointer font-medium transition hover:underline"
           >
-            Sign In
+            Login
           </Link>
         </p>
       </div>
@@ -309,4 +309,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default RegisterForm;

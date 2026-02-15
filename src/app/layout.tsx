@@ -29,7 +29,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className={cn('antialiased', poppins.className)}>
         <Provider>
           <Header />
-          <main className="min-h-[calc(100vh-91.38px)]">{children}</main>
+          <main className="min-h-[calc(100vh-83.38px)]">{children}</main>
           <Footer />
           <Toaster
             position="top-center"

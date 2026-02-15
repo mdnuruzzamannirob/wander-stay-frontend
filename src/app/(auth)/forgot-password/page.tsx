@@ -1,16 +1,11 @@
-import ForgotPasswordForm from "@/components/modules/auth/ForgotPasswordForm";
+import ForgotPasswordForm from '@/components/modules/auth/ForgotPasswordForm';
 
 export const metadata = {
-  title: "Forgot Password - WanderStay",
-  description:
-    "Forgot your WanderStay account password? Enter your email to reset it.",
+  title: 'Forgot Password - WanderStay',
+  description: 'Forgot your WanderStay account password? Enter your email to reset it.',
 };
 const ForgotPasswordPage = () => {
-  return (
-    <>
-      <ForgotPasswordForm />
-    </>
-  );
+  return <ForgotPasswordForm />;
 };
 
 export default ForgotPasswordPage;

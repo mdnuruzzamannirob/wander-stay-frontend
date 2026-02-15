@@ -28,7 +28,7 @@ export default function Navbar() {
   const activeCategory = searchParams.get('category');
   const hasHydrated = useHasHydrated();
 
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   const isLoading = false;
 
   const showAuthSkeleton = !hasHydrated || isLoading;
@@ -94,14 +94,14 @@ export default function Navbar() {
           {/* Guest */}
           {!showAuthSkeleton && !isAuthenticated && (
             <div className="flex items-center gap-2">
-              <Link href="/sign-in">
-                <Button size="lg" variant="ghost">
-                  Sign In
+              <Link href="/login">
+                <Button variant="ghost" className="text-muted-foreground">
+                  Login
                 </Button>
               </Link>
 
-              <Link href="/sign-up">
-                <Button size="lg">Sign Up</Button>
+              <Link href="/register">
+                <Button>Register</Button>
               </Link>
             </div>
           )}

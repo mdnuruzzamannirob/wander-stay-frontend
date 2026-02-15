@@ -13,7 +13,7 @@ import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { SignInFormData, signInSchema } from '@/lib/schemas/auth';
 import { useSignInMutation } from '@/store/features/auth/authApi';
 
-const SignInForm = () => {
+const LoginForm = () => {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +47,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-119px)] items-center justify-center py-14">
+    <div className="app-container flex min-h-[calc(100vh-83.38px)] items-center justify-center py-14">
       <div className="border-brand-100 w-full max-w-120 rounded-xl border p-8 shadow-sm">
         {/* Title */}
         <div className="mb-5 flex flex-col items-center text-center">
@@ -126,12 +126,12 @@ const SignInForm = () => {
           <ButtonComp
             type="submit"
             loading={isLoading}
-            loadingText="Signing in..."
+            loadingText="Logging in..."
             size="lg"
             disabled={isLoading}
             className="h-11 w-full"
           >
-            Sign In
+            Login
           </ButtonComp>
         </form>
 
@@ -150,17 +150,17 @@ const SignInForm = () => {
             width={18}
             height={18}
           />
-          Sign In with Google
+          Login with Google
         </Button>
 
         {/* Sign Up link */}
         <p className="text-muted-foreground mt-5 text-center text-sm">
           Don&apos;t have an account?{' '}
           <Link
-            href="/sign-up"
+            href="/register"
             className="text-primary cursor-pointer font-medium transition hover:underline"
           >
-            Sign Up
+            Register
           </Link>
         </p>
       </div>
@@ -168,4 +168,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default LoginForm;

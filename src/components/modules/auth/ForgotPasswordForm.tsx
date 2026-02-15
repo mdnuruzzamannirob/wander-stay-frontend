@@ -40,7 +40,7 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-119px)] items-center justify-center py-14">
+    <div className="app-container flex min-h-[calc(100vh-83.38px)] items-center justify-center py-14">
       <div className="border-brand-100 w-full max-w-120 rounded-xl border p-8 shadow-sm">
         <div className="mb-5 flex flex-col items-center text-center">
           <Logo />
@@ -85,8 +85,8 @@ const ForgotPasswordForm = () => {
 
         <p className="text-muted-foreground mt-5 text-center text-sm">
           Remembered your password?{' '}
-          <Link href="/sign-in" className="text-primary font-medium transition hover:underline">
-            Sign In
+          <Link href="/login" className="text-primary font-medium transition hover:underline">
+            Login
           </Link>
         </p>
       </div>
