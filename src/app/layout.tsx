@@ -3,7 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import Provider from './provider';
 import { cn } from '@/lib/utils/cn';
-import Navbar from '@/components/layout/Navbar';
+import Header from '@/components/layout/header/Header';
 import Footer from '@/components/layout/Footer';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning className={cn('antialiased', poppins.className)}>
         <Provider>
-          <Navbar />
+          <Header />
           {children}
           <Footer />
           <Toaster

@@ -28,7 +28,7 @@ const ButtonComp = ({
 }: ButtonCompProps) => {
   return (
     <Button
-      className={cn('items-center', className)}
+      className={cn('items-center disabled:cursor-not-allowed', className)}
       variant={variant}
       size={size}
       disabled={loading || disabled}

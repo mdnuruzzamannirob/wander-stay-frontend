@@ -1,11 +1,27 @@
-import { Home, LayoutDashboard, Settings } from 'lucide-react';
+import { CalendarCheck, History, Home, LayoutDashboard, Settings } from 'lucide-react';
 
 export const nav = [
-  { label: 'Woman', href: '/product/woman', slug: 'woman' },
-  { label: 'Men', href: '/product/men', slug: 'men' },
-  { label: 'Kids', href: '/product/kids', slug: 'kids' },
-  { label: 'Electronics', href: '/product/electronics', slug: 'electronics' },
-  { label: 'About Us', href: '/about-us' },
+  {
+    label: 'Home',
+    href: '/',
+    slug: 'home',
+  },
+  {
+    label: 'About Us',
+    href: '/about-us',
+    slug: 'about',
+  },
+  {
+    label: 'Contact Us',
+    href: '/contact-us',
+    slug: 'contact',
+  },
+
+  {
+    label: 'FAQs',
+    href: '/faqs',
+    slug: 'faqs',
+  },
 ];
 
 export const userNav = [
@@ -15,14 +31,14 @@ export const userNav = [
     icon: Home,
   },
   {
-    label: 'Buyer Dashboard',
-    href: '/buyer/overview',
-    icon: LayoutDashboard,
+    label: 'My Bookings',
+    href: '/my-bookings',
+    icon: CalendarCheck,
   },
   {
-    label: 'Seller Dashboard',
-    href: '/seller/overview',
-    icon: LayoutDashboard,
+    label: 'Bookings History',
+    href: '/bookings-history',
+    icon: History,
   },
   {
     label: 'Settings',
