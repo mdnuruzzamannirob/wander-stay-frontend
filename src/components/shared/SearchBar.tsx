@@ -1,211 +1,208 @@
 'use client';
 
-import { FormEvent, useMemo, useState } from 'react';
-import { CalendarRange, MapPin, Minus, Plus, Search, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import * as React from 'react';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon, MapPin, Minus, Plus, Search, Users } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
+
+import { cn } from '@/lib/utils/cn';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils/cn';
 
-type SearchBarProps = {
-  variant?: 'hero' | 'compact';
-  onSearch?: (payload: {
-    destination: string;
-    checkIn: string;
-    checkOut: string;
-    adults: number;
-    children: number;
-    rooms: number;
-  }) => void;
-};
+function CustomCalendar({ selected, onSelect }: any) {
+  return (
+    <Calendar
+      initialFocus
+      mode="range"
+      defaultMonth={selected?.from}
+      selected={selected}
+      onSelect={onSelect}
+      numberOfMonths={2}
+      // FIX: Overriding internal styles to remove outlines and customize colors
+      className="p-3"
+      classNames={{
+        day_selected:
+          'bg-rose-500 text-white hover:bg-rose-600 focus:bg-rose-600 focus:text-white rounded-full',
+        day_today: 'bg-slate-100 text-slate-900 rounded-full',
+        day_range_middle: 'aria-selected:bg-rose-100 aria-selected:text-rose-900',
+        day: cn(
+          buttonVariants({ variant: 'ghost' }),
+          'h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-slate-100 focus:bg-slate-100 focus:text-slate-900 focus:ring-0 focus:outline-none rounded-full',
+          // ^^^ focus:ring-0 and focus:outline-none removes the inner outline
+        ),
+      }}
+    />
+  );
+}
 
-const SearchBar = ({ variant = 'hero', onSearch }: SearchBarProps) => {
-  const [destination, setDestination] = useState('');
-  const [checkIn, setCheckIn] = useState('');
-  const [checkOut, setCheckOut] = useState('');
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [rooms, setRooms] = useState(1);
+export default function SearchBar() {
+  const [date, setDate] = React.useState<DateRange | undefined>();
+  const [adults, setAdults] = React.useState(2);
+  const [children, setChildren] = React.useState(0);
+  const [rooms, setRooms] = React.useState(1);
 
-  const guestLabel = useMemo(() => {
-    const guestCount = adults + children;
-    return `${guestCount} Guest${guestCount === 1 ? '' : 's'}, ${rooms} Room${
-      rooms === 1 ? '' : 's'
-    }`;
-  }, [adults, children, rooms]);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSearch?.({ destination, checkIn, checkOut, adults, children, rooms });
-  };
-
-  const wrapperClasses = variant === 'hero' ? 'mt-8 w-full max-w-7xl' : 'w-full max-w-7xl';
-
-  const innerClasses = variant === 'hero' ? 'bg-white/95' : 'bg-white';
+  // CustomCalendar moved to file scope above SearchBar to avoid creating components during render
 
   return (
-    <div className={wrapperClasses}>
-      <div className="rounded-3xl bg-linear-to-r from-white/60 via-white/90 to-white/60 p-px shadow-[0_25px_70px_-45px_rgba(15,23,42,0.8)]">
-        <form
-          className={cn(
-            'flex flex-col gap-3 rounded-3xl p-4 text-slate-900 backdrop-blur sm:flex-row sm:flex-wrap sm:items-end',
-            innerClasses,
-          )}
-          onSubmit={handleSubmit}
-        >
-          <div className="focus-within:border-primary/60 focus-within:ring-primary/20 flex flex-1 basis-60 flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm transition focus-within:ring-2">
-            <span className="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-              Destination
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                <MapPin className="h-4 w-4" />
-              </span>
-              <input
-                type="text"
-                name="destination"
-                value={destination}
-                onChange={(event) => setDestination(event.target.value)}
-                placeholder="City, landmark, or hotel"
-                className="h-10 border-0 bg-transparent px-0 text-sm font-semibold text-slate-800 shadow-none focus-visible:ring-0"
-              />
-            </div>
+    <div className="mx-auto w-full max-w-7xl p-4">
+      {/* Main Container: Using items-center for vertical alignment */}
+      <div className="flex flex-col items-center gap-2 rounded-2xl border border-slate-200/80 bg-white p-2 md:flex-row md:gap-0 md:rounded-full">
+        {/* 1. Destination */}
+        <div className="group flex w-full flex-[1.5] cursor-text items-center gap-3 rounded-full px-5 py-3 transition-all hover:bg-slate-50 md:w-auto">
+          <MapPin className="h-5 w-5 shrink-0 text-slate-400 transition-colors group-hover:text-rose-500" />
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <label className="text-left text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+              Where
+            </label>
+            <input
+              type="text"
+              placeholder="Search destinations"
+              className="w-full truncate border-none bg-transparent p-0 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:ring-0 focus:outline-none"
+            />
           </div>
+        </div>
 
-          <div className="focus-within:border-primary/60 focus-within:ring-primary/20 flex flex-1 basis-50 flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm transition focus-within:ring-2">
-            <span className="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-              Check-in
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                <CalendarRange className="h-4 w-4" />
-              </span>
-              <input
-                type="date"
-                name="checkIn"
-                value={checkIn}
-                onChange={(event) => setCheckIn(event.target.value)}
-                className="h-10 border-0 bg-transparent px-0 text-sm font-semibold text-slate-800 shadow-none focus-visible:ring-0"
-              />
-            </div>
-          </div>
+        {/* Separator with self-center to fix height alignment */}
+        <Separator
+          orientation="vertical"
+          className="mx-2 hidden h-8 w-[1px] self-center bg-slate-200 md:block"
+        />
 
-          <div className="focus-within:border-primary/60 focus-within:ring-primary/20 flex flex-1 basis-50 flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm transition focus-within:ring-2">
-            <span className="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-              Check-out
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                <CalendarRange className="h-4 w-4" />
-              </span>
-              <input
-                type="date"
-                name="checkOut"
-                value={checkOut}
-                onChange={(event) => setCheckOut(event.target.value)}
-                className="h-10 border-0 bg-transparent px-0 text-sm font-semibold text-slate-800 shadow-none focus-visible:ring-0"
-              />
-            </div>
-          </div>
-
+        {/* 2. Check-in */}
+        <div className="w-full flex-1 md:w-auto">
           <Popover>
             <PopoverTrigger asChild>
-              <button
-                type="button"
-                className="hover:border-primary/60 focus-visible:ring-primary/20 flex flex-1 basis-55 flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-left shadow-sm transition focus-visible:ring-2 focus-visible:outline-none"
-              >
-                <span className="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-                  Guests
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                    <Users className="h-4 w-4" />
+              <div className="group flex cursor-pointer items-center gap-3 rounded-full px-5 py-3 transition-all hover:bg-slate-50">
+                <CalendarIcon className="h-5 w-5 shrink-0 text-slate-400 group-hover:text-rose-500" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="truncate text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                    Check in
                   </span>
-                  <span className="text-sm font-semibold text-slate-800">{guestLabel}</span>
+                  <span className="truncate text-sm font-bold whitespace-nowrap text-slate-900">
+                    {date?.from ? format(date.from, 'MMM dd') : 'Add date'}
+                  </span>
                 </div>
-              </button>
+              </div>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-80 p-4">
-              <div className="space-y-4">
-                <GuestRow
-                  label="Adults"
-                  description="Ages 13+"
-                  value={adults}
-                  onDecrease={() => setAdults(Math.max(1, adults - 1))}
-                  onIncrease={() => setAdults(adults + 1)}
-                />
-                <Separator />
+            <PopoverContent
+              className="w-auto rounded-3xl border-none p-0 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)]"
+              align="center"
+            >
+              <CustomCalendar selected={date} onSelect={setDate} />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <Separator
+          orientation="vertical"
+          className="mx-2 hidden h-8 w-[1px] self-center bg-slate-200 md:block"
+        />
+
+        {/* 3. Check-out */}
+        <div className="w-full flex-1 md:w-auto">
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="group flex cursor-pointer items-center gap-3 rounded-full px-5 py-3 transition-all hover:bg-slate-50">
+                <CalendarIcon className="h-5 w-5 flex-shrink-0 text-slate-400 group-hover:text-rose-500" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="truncate text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                    Check out
+                  </span>
+                  <span className="truncate text-sm font-bold whitespace-nowrap text-slate-900">
+                    {date?.to ? format(date.to, 'MMM dd') : 'Add date'}
+                  </span>
+                </div>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-auto rounded-3xl border-none p-0 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)]"
+              align="center"
+            >
+              <CustomCalendar selected={date} onSelect={setDate} />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <Separator
+          orientation="vertical"
+          className="mx-2 hidden h-8 w-[1px] self-center bg-slate-200 md:block"
+        />
+
+        {/* 4. Guests */}
+        <div className="w-full flex-1 md:w-auto">
+          <Popover>
+            <PopoverTrigger asChild>
+              <div className="group flex cursor-pointer items-center gap-3 rounded-full px-5 py-3 transition-all hover:bg-slate-50">
+                <Users className="h-5 w-5 flex-shrink-0 text-slate-400 group-hover:text-rose-500" />
+                <div className="flex flex-col overflow-hidden">
+                  <span className="truncate text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                    Who
+                  </span>
+                  <span className="truncate text-sm font-bold text-slate-900">
+                    {adults + children} Guests
+                  </span>
+                </div>
+              </div>
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-80 rounded-3xl border-none bg-white p-6 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)]"
+              align="end"
+            >
+              <div className="space-y-6">
+                <GuestRow label="Adults" sub="Ages 13+" val={adults} setVal={setAdults} min={1} />
+                <Separator className="bg-slate-100" />
                 <GuestRow
                   label="Children"
-                  description="Ages 0-12"
-                  value={children}
-                  onDecrease={() => setChildren(Math.max(0, children - 1))}
-                  onIncrease={() => setChildren(children + 1)}
+                  sub="Ages 2-12"
+                  val={children}
+                  setVal={setChildren}
+                  min={0}
                 />
-                <Separator />
-                <GuestRow
-                  label="Rooms"
-                  description="Select rooms"
-                  value={rooms}
-                  onDecrease={() => setRooms(Math.max(1, rooms - 1))}
-                  onIncrease={() => setRooms(rooms + 1)}
-                />
+                <Separator className="bg-slate-100" />
+                <GuestRow label="Rooms" sub="Total rooms" val={rooms} setVal={setRooms} min={1} />
               </div>
             </PopoverContent>
           </Popover>
+        </div>
 
-          <Button
-            type="submit"
-            size="lg"
-            className="h-14 w-full gap-2 rounded-2xl text-sm sm:w-auto"
-          >
-            <Search className="h-4 w-4" />
-            Search
-          </Button>
-        </form>
+        {/* 5. Search Button */}
+        <Button className="h-12 w-full rounded-full bg-rose-500 px-8 text-base font-bold text-white shadow-lg shadow-rose-200/50 transition-all hover:bg-rose-600 active:scale-95 md:ml-2 md:h-14 md:w-auto">
+          <Search className="h-5 w-5 stroke-[2.5px] md:mr-2" />
+          <span className="inline">Search</span>
+        </Button>
       </div>
     </div>
   );
-};
+}
 
-type GuestRowProps = {
-  label: string;
-  description: string;
-  value: number;
-  onDecrease: () => void;
-  onIncrease: () => void;
-};
-
-const GuestRow = ({ label, description, value, onDecrease, onIncrease }: GuestRowProps) => {
+function GuestRow({ label, sub, val, setVal, min }: any) {
   return (
     <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm font-semibold text-slate-900">{label}</p>
-        <p className="text-xs text-slate-500">{description}</p>
+      <div className="flex flex-col">
+        <span className="text-sm font-bold text-slate-900">{label}</span>
+        <span className="text-xs text-slate-500">{sub}</span>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <Button
-          type="button"
           variant="outline"
-          size="icon-sm"
-          onClick={onDecrease}
-          className="h-8 w-8"
+          size="icon"
+          className="h-9 w-9 rounded-full border-slate-200 bg-transparent transition-colors hover:border-rose-500 hover:text-rose-500 focus:ring-0"
+          onClick={() => setVal(Math.max(min, val - 1))}
         >
-          <Minus className="h-3 w-3" />
+          <Minus className="h-4 w-4" />
         </Button>
-        <span className="w-6 text-center text-sm font-semibold text-slate-800">{value}</span>
+        <span className="w-5 text-center text-sm font-bold text-slate-900">{val}</span>
         <Button
-          type="button"
           variant="outline"
-          size="icon-sm"
-          onClick={onIncrease}
-          className="h-8 w-8"
+          size="icon"
+          className="h-9 w-9 rounded-full border-slate-200 bg-transparent transition-colors hover:border-rose-500 hover:text-rose-500 focus:ring-0"
+          onClick={() => setVal(val + 1)}
         >
-          <Plus className="h-3 w-3" />
+          <Plus className="h-4 w-4" />
         </Button>
       </div>
     </div>
   );
-};
-
-export default SearchBar;
+}
