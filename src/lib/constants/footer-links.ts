@@ -1,39 +1,37 @@
-import { Facebook, Twitter, Instagram, Mail } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 
 export const footerLinks = {
   help: [
+    { label: 'Home', href: '/' },
+    { label: 'About Us', href: '/about-us' },
+    { label: 'Contact', href: '/contact' },
     { label: 'Help Center', href: '/help-center' },
-    { label: 'Selling Guide', href: '/selling-guide' },
-    { label: 'Buying Guide', href: '/buying-guide' },
-    { label: 'How it works', href: '/how-it-works' },
   ],
   legal: [
     { label: 'About Us', href: '/about-us' },
     { label: 'Privacy Policy', href: '/privacy-policy' },
     { label: 'Terms & Condition', href: '/terms-and-condition' },
-    { label: 'Trust & Safety', href: '/trust-and-safety' },
+    { label: 'Cancellation Policy', href: '/cancellation-policy' },
   ],
 };
 
-export const socialLinks = [
+export const contactLinks = [
   {
-    name: 'Facebook',
-    href: 'https://facebook.com',
-    icon: Facebook,
+    label: '123 Hotel Avenue, Suite 100 Amsterdam, NL 10001',
+    icon: MapPin,
   },
   {
-    name: 'Twitter',
-    href: 'https://twitter.com',
-    icon: Twitter,
+    label: '+31 (0) 20 123 4567',
+    icon: Phone,
   },
   {
-    name: 'Instagram',
-    href: 'https://instagram.com',
-    icon: Instagram,
-  },
-  {
-    name: 'Email',
-    href: 'mailto:support@relo.com',
+    label: 'support@wanderstay.com',
     icon: Mail,
   },
+];
+
+export const socialLinks = [
+  { name: 'Facebook', href: 'https://facebook.com', icon: Facebook },
+  { name: 'Twitter', href: 'https://twitter.com', icon: Twitter },
+  { name: 'Instagram', href: 'https://instagram.com', icon: Instagram },
 ];

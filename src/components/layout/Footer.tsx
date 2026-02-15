@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Logo from '../shared/Logo';
 import { Button } from '../ui/button';
-import { footerLinks, socialLinks } from '@/lib/constants/footer-links';
+import { contactLinks, footerLinks, socialLinks } from '@/lib/constants/footer-links';
 
 type FooterColumnProps = {
   title: string;
@@ -46,8 +46,16 @@ export default function Footer() {
 
         {/* Social */}
         <div>
-          <h3 className="text-primary mb-4 font-semibold">Connect With Us</h3>
-          <p className="text-muted-foreground mb-5 max-w-xs text-sm"></p>
+          <h3 className="text-primary mb-4 font-semibold">Contact Us</h3>
+
+          <ul className="text-muted-foreground space-y-3 text-sm">
+            {contactLinks.map(({ label, icon: Icon }) => (
+              <li key={label} className="flex items-center gap-3">
+                <Icon className="size-4 shrink-0" />
+                <span className="block leading-relaxed font-medium">{label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
