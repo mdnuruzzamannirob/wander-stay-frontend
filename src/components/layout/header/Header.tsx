@@ -60,7 +60,7 @@ export default function Navbar() {
                 {item.label}
 
                 <span
-                  className={`absolute bottom-0 left-0 h-0.5 w-full transition-transform duration-300 ${
+                  className={`absolute -bottom-1 left-0 h-0.5 w-full transition-transform duration-300 ${
                     isActive
                       ? 'bg-primary scale-x-100'
                       : 'bg-primary scale-x-0 group-hover:scale-x-100'

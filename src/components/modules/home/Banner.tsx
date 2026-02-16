@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import SearchBar from '@/components/shared/SearchBar';
+import SearchBar from '@/components/shared/searchbar/SearchBar';
 import { useCookiePreference } from '@/hooks/useCookiePreference';
 import { useHasHydrated } from '@/hooks/useHasHydrated';
 import { useDelayedFlag } from '@/hooks/useDelayedFlag';
@@ -39,8 +39,8 @@ export default function Banner() {
       />
       <div className="absolute inset-0 bg-linear-to-b from-gray-900/80 via-gray-900/60 to-gray-950/90" />
 
-      <div className="app-container relative flex flex-col items-center justify-center py-16 text-center">
-        <div className="mb-5 flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs text-white/80">
+      <div className="app-container relative flex flex-col items-center justify-center space-y-5 py-16 text-center">
+        <div className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs text-white/80">
           <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           Book now - no credit card needed, or use one if you prefer
         </div>
@@ -50,14 +50,14 @@ export default function Banner() {
           <span className="text-primary block">Luxury Getaway</span>
         </h1>
 
-        <p className="mt-4 max-w-2xl text-sm text-white/80 sm:text-base">
+        <p className="max-w-2xl text-sm text-white/80 sm:text-base">
           Transparent prices, flexible cancellation, and secure payments <br /> without hidden fees
           or pressure tactics.
         </p>
 
         <SearchBar />
 
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-white/70">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/70">
           <span className="flex items-center gap-2">
             <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             Taxes and fees shown upfront
