@@ -1,4 +1,8 @@
 import Banner from '@/components/modules/home/Banner';
+import FeaturedHotels from '@/components/modules/home/FeaturedHotels';
+import PopularDestinations from '@/components/modules/home/PopularDestinations';
+import FaqSection from '@/components/modules/home/FaqSection';
+
 export const metadata = {
   title: 'WanderStay - Find Your Perfect Luxury Getaway',
   description:
@@ -9,6 +13,9 @@ const HomePage = () => {
   return (
     <>
       <Banner />
+      <FeaturedHotels />
+      <PopularDestinations />
+      <FaqSection />
     </>
   );
 };

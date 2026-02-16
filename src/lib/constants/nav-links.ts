@@ -1,4 +1,4 @@
-import { CalendarCheck, History, Home, LayoutDashboard, Settings } from 'lucide-react';
+import { CalendarCheck, History, Home, Settings } from 'lucide-react';
 
 export const nav = [
   {
