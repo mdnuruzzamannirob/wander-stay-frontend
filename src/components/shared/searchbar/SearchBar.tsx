@@ -9,8 +9,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Separator } from '@/components/ui/separator';
 import GuestRow from './GuestRow';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SearchBar({ className }: { className?: string }) {
+  const router = useRouter();
   const [destination, setDestination] = useState<string | null>(null);
   const [date, setDate] = useState<DateRange | undefined>();
   const [adults, setAdults] = useState(2);
@@ -197,7 +199,11 @@ export default function SearchBar({ className }: { className?: string }) {
         </div>
 
         {/* 5. Search Button */}
-        <button className="bg-primary hover:bg-primary/90 flex items-center justify-center gap-2 rounded-lg px-6 py-3 transition lg:rounded-full">
+        <button
+          type="button"
+          onClick={() => router.push('/hotels')}
+          className="bg-primary hover:bg-primary/90 flex items-center justify-center gap-2 rounded-lg px-6 py-3 transition lg:rounded-full"
+        >
           <Search className="size-5 shrink-0 stroke-[2.5px]" />
           Search
         </button>
