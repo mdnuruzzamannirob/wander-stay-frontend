@@ -3,59 +3,56 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Logo from '../../shared/Logo';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { nav } from '@/lib/constants/nav-links';
 import { useHasHydrated } from '@/hooks/useHasHydrated';
 import { cn } from '@/lib/utils/cn';
 import MobileMenu from './MobileMenu';
 import UserMenu from './UserMenu';
 import NotificationBell from './NotificationBell';
-
-/* Avatar Skeleton */
-function AvatarSkeleton() {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="h-10 w-20 animate-pulse rounded-md bg-slate-200" />
-      <div className="h-10 w-20 animate-pulse rounded-md bg-slate-200" />
-      <div className="h-10 w-10 animate-pulse rounded-full bg-slate-200" />
-    </div>
-  );
-}
+import { RightAuthSkeleton } from '@/components/layout/header/RightAuthSkeleton';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const activeCategory = searchParams.get('category');
   const hasHydrated = useHasHydrated();
 
+  // TODO:  real auth/getMe state
   const isAuthenticated = false;
-  const isLoading = false;
+  const isLoading = false; // getMe loading (only meaningful if isAuthenticated)
 
-  const showAuthSkeleton = !hasHydrated || isLoading;
+  const showRightAuthPlaceholder = isAuthenticated && (!hasHydrated || isLoading);
 
-  /* Render */
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="app-container flex items-center justify-between gap-3 py-3">
-        <MobileMenu />
-        <Logo />
+      <div className="app-container relative flex items-center justify-between gap-3 py-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+        {/* Left */}
+        <div className="flex items-center lg:justify-self-start">
+          <MobileMenu />
 
-        {/* Middle Actions */}
-        <nav className="hidden items-center gap-8 lg:flex">
+          <Logo className="hidden lg:block" />
+        </div>
+
+        <Logo className="lg:hidden" />
+
+        {/* Middle  */}
+        <nav className="hidden items-center gap-8 lg:flex lg:justify-self-center">
           {nav.map((item) => {
             const isActive =
               pathname === item.href ||
               pathname.startsWith(`${item.href}/`) ||
-              (item.slug && pathname === '/product' && activeCategory === item.slug);
+              (item.slug && pathname === '/product');
 
             return (
               <Link
                 key={item.label}
                 href={item.href}
-                className={cn('relative flex h-full items-center text-sm font-medium transition', {
-                  'bg-brand-50 text-primary': isActive,
-                  'hover:text-primary text-muted-foreground': !isActive,
-                })}
+                className={cn(
+                  'group relative flex h-full items-center text-sm font-medium transition',
+                  {
+                    'bg-brand-50 text-primary': isActive,
+                    'hover:text-primary text-muted-foreground': !isActive,
+                  },
+                )}
               >
                 {item.label}
 
@@ -71,36 +68,30 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-2">
-          {/* Loading Skeleton */}
-          {showAuthSkeleton && (
-            <div className="flex items-center gap-3">
-              <AvatarSkeleton />
-            </div>
-          )}
+        {/* Right */}
+        <div className="flex items-center gap-2 lg:justify-self-end">
+          {showRightAuthPlaceholder && <RightAuthSkeleton />}
 
-          {/* Authenticated */}
-          {!showAuthSkeleton && isAuthenticated && (
+          {!showRightAuthPlaceholder && isAuthenticated && (
             <div className="flex items-center gap-3">
-              {/* Notification */}
               <NotificationBell />
-
-              {/* Profile */}
               <UserMenu />
             </div>
           )}
 
-          {/* Guest */}
-          {!showAuthSkeleton && !isAuthenticated && (
+          {!isAuthenticated && (
             <div className="flex items-center gap-2">
-              <Link href="/login">
+              <Link href="/login" className="lg:hidden">
+                <Button>Login</Button>
+              </Link>
+
+              <Link href="/login" className="hidden lg:block">
                 <Button variant="ghost" className="text-muted-foreground">
                   Login
                 </Button>
               </Link>
 
-              <Link href="/register">
+              <Link href="/register" className="hidden lg:block">
                 <Button>Register</Button>
               </Link>
             </div>
