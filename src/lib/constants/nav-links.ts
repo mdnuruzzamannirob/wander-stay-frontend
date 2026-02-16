@@ -18,9 +18,9 @@ export const nav = [
   },
 
   {
-    label: 'FAQs',
-    href: '/faqs',
-    slug: 'faqs',
+    label: 'FAQ',
+    href: '/faq',
+    slug: 'faq',
   },
 ];
 
