@@ -50,9 +50,9 @@ export default function Banner() {
           <span className="text-primary block">Luxury Getaway</span>
         </h1>
 
-        <p className="max-w-2xl text-sm text-white/80 sm:text-base">
-          Transparent prices, flexible cancellation, and secure payments <br /> without hidden fees
-          or pressure tactics.
+        <p className="max-w-lg text-sm text-white/80 sm:text-base">
+          Transparent prices, flexible cancellation, and secure payments without hidden fees or
+          pressure tactics.
         </p>
 
         <SearchBar />

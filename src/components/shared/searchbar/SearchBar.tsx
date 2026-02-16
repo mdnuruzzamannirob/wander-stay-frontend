@@ -44,13 +44,13 @@ export default function SearchBar({ className }: { className?: string }) {
 
             <PopoverContent
               align="start"
-              className="w-(--radix-popper-anchor-width) space-y-3 rounded-lg border bg-white p-5 shadow lg:w-80 lg:rounded-2xl"
+              className="w-(--radix-popper-anchor-width) space-y-3 rounded-lg border bg-white p-3 shadow lg:w-80 lg:rounded-2xl"
             >
               {/* Search input */}
               <input
                 type="text"
                 placeholder="Search city, area or hotel"
-                className="ring-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
+                className="ring-primary w-full rounded-lg border px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
               />
 
               {/* Demo destination list */}
