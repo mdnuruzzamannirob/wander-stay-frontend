@@ -12,7 +12,10 @@ export default function HotelCard({ hotel }: HotelCardProps) {
   const getRatingStatus = (rating: number) => {
     if (rating >= 4.8) return 'Exceptional';
     if (rating >= 4.5) return 'Excellent';
-    return 'Very Good';
+    if (rating >= 4.2) return 'Very Good';
+    if (rating >= 3.8) return 'Good';
+    if (rating >= 3.5) return 'Pleasant';
+    return 'Recommended';
   };
 
   return (
@@ -39,11 +42,11 @@ export default function HotelCard({ hotel }: HotelCardProps) {
             </button>
           </div>
 
-          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white bg-white/95 px-2 py-1.5 shadow backdrop-blur-md">
+          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white bg-white/95 px-1.5 py-1 shadow backdrop-blur-md">
             <div className="flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-semibold text-white">
               <Star className="size-2.5 fill-current leading-0" /> {hotel.rating}
             </div>
-            <span className="text-foreground text-[11px] font-semibold tracking-tight uppercase">
+            <span className="text-foreground text-[10px] font-semibold tracking-tight uppercase">
               {getRatingStatus(hotel.rating)}
             </span>
           </div>
@@ -75,7 +78,7 @@ export default function HotelCard({ hotel }: HotelCardProps) {
           </div>
         </div>
 
-        {/* Dynamic Description (Clamped for Fixed Height) */}
+        {/* Dynamic Description */}
         <p className="text-muted-foreground mt-3 line-clamp-2 text-sm leading-relaxed md:line-clamp-3">
           Experience world-class hospitality at{' '}
           <span className="font-semibold text-slate-800">{hotel.name}</span>. Enjoy premium access
@@ -83,17 +86,22 @@ export default function HotelCard({ hotel }: HotelCardProps) {
           {hotel.city}.
         </p>
 
-        {/* Amenities */}
-        <div className="mt-3 flex flex-wrap gap-1">
-          {hotel.amenities.map((amenity) => (
+        {/* Amenities (Max 3 Show logic) */}
+        <div className="mt-3 flex flex-wrap items-center gap-1">
+          {hotel.amenities.slice(0, 3).map((amenity) => (
             <div
               key={amenity}
               className="text-muted-foreground flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-[10px] font-semibold uppercase"
             >
-              <div className="h-1 w-1 rounded-full bg-blue-400" />
+              <div className="bg-primary size-1.5 rounded-full" />
               {amenity}
             </div>
           ))}
+          {hotel.amenities.length > 3 && (
+            <span className="text-muted-foreground ml-1 text-[10px] font-semibold">
+              +{hotel.amenities.length - 3} more
+            </span>
+          )}
         </div>
 
         {/* Features Row */}
@@ -110,8 +118,8 @@ export default function HotelCard({ hotel }: HotelCardProps) {
           )}
         </div>
 
-        {/* Footer (Fixed at Bottom) */}
-        <div className="mt-3 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 md:mt-auto">
+        {/* Footer */}
+        <div className="mt-5 flex items-center justify-between gap-4 border-t border-gray-200 pt-5 md:mt-auto">
           <div className="flex flex-col">
             <span className="text-muted-foreground text-xs font-medium tracking-wider">From</span>
             <div className="flex items-baseline gap-1">
