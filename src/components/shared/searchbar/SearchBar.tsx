@@ -50,12 +50,12 @@ export default function SearchBar({ className }: { className?: string }) {
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="flex flex-col gap-2 rounded-2xl border bg-white p-2 lg:flex-row lg:rounded-full">
+      <div className="flex flex-col gap-2 rounded-2xl border bg-white p-2 lg:flex-row lg:rounded-2xl">
         {/* 1. Destination */}
         <div className="w-full min-w-0 flex-[1.3]">
           <Popover>
             <PopoverTrigger asChild>
-              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-full">
+              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <MapPin className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex min-w-0 flex-col gap-1 overflow-hidden">
                   <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
@@ -73,7 +73,7 @@ export default function SearchBar({ className }: { className?: string }) {
 
             <PopoverContent
               align="start"
-              className="w-(--radix-popper-anchor-width) space-y-3 rounded-lg border bg-white p-3 shadow lg:w-80 lg:rounded-2xl"
+              className="w-(--radix-popper-anchor-width) space-y-3 rounded-lg border bg-white p-3 shadow lg:w-80 lg:rounded-xl"
             >
               {/* Search input */}
               <input
@@ -115,7 +115,7 @@ export default function SearchBar({ className }: { className?: string }) {
         <div className="w-full flex-1">
           <Popover>
             <PopoverTrigger asChild>
-              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-full">
+              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <CalendarIcon className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex flex-col gap-1 overflow-hidden">
                   <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
@@ -132,7 +132,7 @@ export default function SearchBar({ className }: { className?: string }) {
               </div>
             </PopoverTrigger>
             <PopoverContent
-              className="w-(--radix-popper-anchor-width) space-y-5 rounded-lg border bg-white p-5 shadow lg:w-auto lg:rounded-2xl"
+              className="w-(--radix-popper-anchor-width) space-y-5 rounded-lg border bg-white p-5 shadow lg:w-auto lg:rounded-xl"
               align="start"
             >
               <Calendar
@@ -151,7 +151,7 @@ export default function SearchBar({ className }: { className?: string }) {
         <div className="w-full flex-1">
           <Popover>
             <PopoverTrigger asChild>
-              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-full">
+              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <CalendarIcon className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex flex-col gap-1 overflow-hidden">
                   <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
@@ -168,7 +168,7 @@ export default function SearchBar({ className }: { className?: string }) {
               </div>
             </PopoverTrigger>
             <PopoverContent
-              className="w-(--radix-popper-anchor-width) space-y-5 rounded-lg border bg-white p-5 shadow lg:w-auto lg:rounded-2xl"
+              className="w-(--radix-popper-anchor-width) space-y-5 rounded-lg border bg-white p-5 shadow lg:w-auto lg:rounded-xl"
               align="end"
             >
               <Calendar
@@ -187,7 +187,7 @@ export default function SearchBar({ className }: { className?: string }) {
         <div className="w-full flex-[1.1]">
           <Popover>
             <PopoverTrigger asChild>
-              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-full">
+              <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <Users className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex flex-col gap-1 overflow-hidden">
                   <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
@@ -201,7 +201,7 @@ export default function SearchBar({ className }: { className?: string }) {
               </div>
             </PopoverTrigger>
             <PopoverContent
-              className="w-(--radix-popper-anchor-width) space-y-5 rounded-lg border bg-white p-5 shadow lg:w-64 lg:rounded-2xl"
+              className="w-(--radix-popper-anchor-width) space-y-5 rounded-lg border bg-white p-5 shadow lg:w-64 lg:rounded-xl"
               align="end"
             >
               <GuestRow label="Adults" sub="Ages 13+" val={adults} setVal={setAdults} min={1} />
@@ -223,7 +223,7 @@ export default function SearchBar({ className }: { className?: string }) {
         <button
           type="button"
           onClick={() => router.push('/hotels')}
-          className="bg-primary hover:bg-primary/90 flex items-center justify-center gap-2 rounded-lg px-6 py-3 transition lg:rounded-full"
+          className="bg-primary hover:bg-primary/90 flex items-center justify-center gap-2 rounded-lg px-6 py-3 transition lg:rounded-xl"
         >
           <Search className="size-5 shrink-0 stroke-[2.5px]" />
           Search

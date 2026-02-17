@@ -10,6 +10,7 @@ import {
   HotelSortBar,
 } from '@/components/modules/hotels';
 import { HOTELS, HOTELS_PER_PAGE, PRICE_BOUNDS } from '@/lib/constants/hotels-data';
+import { useDebounce } from '@/hooks/useDebounce';
 import type { HotelFiltersState, SortOption } from '@/types/hotel';
 
 const DEFAULT_FILTERS: HotelFiltersState = {
@@ -30,27 +31,36 @@ export default function HotelsPage() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Debounce filters so the list doesn't re-render on every keystroke/slider drag
+  const debouncedFilters = useDebounce(filters, 400);
+  const debouncedSortBy = useDebounce(sortBy, 300);
+
   /* ─── Derived ─────────────────────────────────────────── */
 
   const filteredHotels = useMemo(() => {
-    const normalizedQuery = filters.query.trim().toLowerCase();
+    const normalizedQuery = debouncedFilters.query.trim().toLowerCase();
 
     const filtered = HOTELS.filter((hotel) => {
       const matchesQuery = normalizedQuery
         ? `${hotel.name} ${hotel.city} ${hotel.country}`.toLowerCase().includes(normalizedQuery)
         : true;
-      const matchesCity = filters.city === 'All' || hotel.city === filters.city;
-      const matchesPrice = hotel.price >= filters.minPrice && hotel.price <= filters.maxPrice;
-      const matchesRating = filters.minRating ? hotel.rating >= filters.minRating : true;
-      const matchesFreeCancellation = filters.freeCancellation ? hotel.freeCancellation : true;
-      const matchesPayLater = filters.payLater ? hotel.payLater : true;
+      const matchesCity = debouncedFilters.city === 'All' || hotel.city === debouncedFilters.city;
+      const matchesPrice =
+        hotel.price >= debouncedFilters.minPrice && hotel.price <= debouncedFilters.maxPrice;
+      const matchesRating = debouncedFilters.minRating
+        ? hotel.rating >= debouncedFilters.minRating
+        : true;
+      const matchesFreeCancellation = debouncedFilters.freeCancellation
+        ? hotel.freeCancellation
+        : true;
+      const matchesPayLater = debouncedFilters.payLater ? hotel.payLater : true;
       const matchesTypes =
-        filters.selectedTypes.length > 0
-          ? filters.selectedTypes.includes(hotel.propertyType)
+        debouncedFilters.selectedTypes.length > 0
+          ? debouncedFilters.selectedTypes.includes(hotel.propertyType)
           : true;
       const matchesAmenities =
-        filters.selectedAmenities.length > 0
-          ? filters.selectedAmenities.every((a) => hotel.amenities.includes(a))
+        debouncedFilters.selectedAmenities.length > 0
+          ? debouncedFilters.selectedAmenities.every((a) => hotel.amenities.includes(a))
           : true;
 
       return (
@@ -66,12 +76,12 @@ export default function HotelsPage() {
     });
 
     return [...filtered].sort((a, b) => {
-      if (sortBy === 'price-low') return a.price - b.price;
-      if (sortBy === 'price-high') return b.price - a.price;
-      if (sortBy === 'rating') return b.rating - a.rating;
+      if (debouncedSortBy === 'price-low') return a.price - b.price;
+      if (debouncedSortBy === 'price-high') return b.price - a.price;
+      if (debouncedSortBy === 'rating') return b.rating - a.rating;
       return b.rating * Math.log(b.reviews + 1) - a.rating * Math.log(a.reviews + 1);
     });
-  }, [filters, sortBy]);
+  }, [debouncedFilters, debouncedSortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filteredHotels.length / HOTELS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
@@ -125,16 +135,20 @@ export default function HotelsPage() {
 
   /* ─── Effects ─────────────────────────────────────────── */
 
-  useEffect(() => setPage(1), [filters, sortBy]);
+  // Reset page when debounced values change (not on every keystroke)
+  useEffect(() => setPage(1), [debouncedFilters, debouncedSortBy]);
   useEffect(() => {
     if (page !== safePage) setPage(safePage);
   }, [page, safePage]);
 
+  // Show loading state immediately when user interacts, clear when debounced values settle
   useEffect(() => {
     setIsLoading(true);
-    const timeout = setTimeout(() => setIsLoading(false), 450);
-    return () => clearTimeout(timeout);
-  }, [filters, sortBy, page]);
+  }, [filters, sortBy]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [debouncedFilters, debouncedSortBy]);
 
   /* ─── Filters panel (shared desktop sidebar & mobile sheet) */
   const filtersPanel = (
@@ -178,9 +192,11 @@ export default function HotelsPage() {
       {/* Main content */}
       <section className="app-container py-8 sm:py-10">
         <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-          {/* Desktop sidebar */}
-          <aside className="hidden lg:sticky lg:top-25 lg:block lg:self-start">
-            <div className="rounded-2xl border bg-white p-5">{filtersPanel}</div>
+          {/* Desktop sidebar — scrollable so all filters are accessible */}
+          <aside className="hidden lg:sticky lg:top-25 lg:block lg:max-h-[calc(100vh-7rem)] lg:self-start">
+            <div className="no-scrollbar flex max-h-[calc(100vh-7rem)] flex-col overflow-y-auto rounded-2xl border bg-white p-5">
+              {filtersPanel}
+            </div>
           </aside>
 
           {/* Listings */}
