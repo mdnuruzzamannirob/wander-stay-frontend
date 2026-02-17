@@ -148,15 +148,6 @@ export default function HotelFilters({
             </button>
           ))}
         </div>
-        {filters.minRating > 0 && (
-          <button
-            type="button"
-            onClick={() => onChange('minRating', 0)}
-            className="hover:text-primary text-muted-foreground text-xs font-medium"
-          >
-            Clear rating
-          </button>
-        )}
       </div>
 
       {/* Property type */}
@@ -166,7 +157,7 @@ export default function HotelFilters({
           {PROPERTY_TYPES.map((type) => (
             <label
               key={type}
-              className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm"
+              className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm select-none"
             >
               <Checkbox
                 checked={filters.selectedTypes.includes(type)}
@@ -186,7 +177,7 @@ export default function HotelFilters({
           {AMENITY_OPTIONS.map((amenity) => (
             <label
               key={amenity}
-              className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm"
+              className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm select-none"
             >
               <Checkbox
                 checked={filters.selectedAmenities.includes(amenity)}
@@ -203,7 +194,7 @@ export default function HotelFilters({
       <div className="space-y-2">
         <Label>Booking Perks</Label>
         <div className="space-y-2">
-          <label className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+          <label className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm select-none">
             <Checkbox
               checked={filters.freeCancellation}
               onCheckedChange={() => onChange('freeCancellation', !filters.freeCancellation)}
@@ -211,7 +202,7 @@ export default function HotelFilters({
             />
             Free cancellation
           </label>
-          <label className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm">
+          <label className="group text-muted-foreground flex w-fit cursor-pointer items-center gap-2 text-sm select-none">
             <Checkbox
               checked={filters.payLater}
               onCheckedChange={() => onChange('payLater', !filters.payLater)}

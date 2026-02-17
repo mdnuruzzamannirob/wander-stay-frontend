@@ -29,11 +29,13 @@ export default function HotelsPage() {
   const [filters, setFilters] = useState<HotelFiltersState>(DEFAULT_FILTERS);
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
   const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
 
   // Debounce filters so the list doesn't re-render on every keystroke/slider drag
   const debouncedFilters = useDebounce(filters, 400);
   const debouncedSortBy = useDebounce(sortBy, 300);
+
+  // Derive loading — true while user is still interacting (debounce pending)
+  const isLoading = filters !== debouncedFilters || sortBy !== debouncedSortBy;
 
   /* ─── Derived ─────────────────────────────────────────── */
 
@@ -124,31 +126,28 @@ export default function HotelsPage() {
   const handleFilterChange = useCallback(
     <K extends keyof HotelFiltersState>(key: K, value: HotelFiltersState[K]) => {
       setFilters((prev) => ({ ...prev, [key]: value }));
+      setPage(1);
     },
     [],
   );
 
+  const handleSortChange = useCallback((value: SortOption) => {
+    setSortBy(value);
+    setPage(1);
+  }, []);
+
   const handleClearFilters = useCallback(() => {
     setFilters(DEFAULT_FILTERS);
     setSortBy('recommended');
+    setPage(1);
   }, []);
 
   /* ─── Effects ─────────────────────────────────────────── */
 
-  // Reset page when debounced values change (not on every keystroke)
-  useEffect(() => setPage(1), [debouncedFilters, debouncedSortBy]);
+  // Clamp page if filtered result set shrinks below current page
   useEffect(() => {
     if (page !== safePage) setPage(safePage);
   }, [page, safePage]);
-
-  // Show loading state immediately when user interacts, clear when debounced values settle
-  useEffect(() => {
-    setIsLoading(true);
-  }, [filters, sortBy]);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [debouncedFilters, debouncedSortBy]);
 
   /* ─── Filters panel (shared desktop sidebar & mobile sheet) */
   const filtersPanel = (
@@ -206,7 +205,7 @@ export default function HotelsPage() {
               totalResults={filteredHotels.length}
               visibleCount={pageHotels.length}
               sortBy={sortBy}
-              onSortChange={setSortBy}
+              onSortChange={handleSortChange}
               filtersPanel={filtersPanel}
             />
 
