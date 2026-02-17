@@ -17,7 +17,7 @@ export default function GuestRow({ label, sub, val, setVal, min }: any) {
         >
           <Minus className="size-4 shrink-0" />
         </Button>
-        <span className="w-5 text-center font-semibold">{val}</span>
+        <span className="w-5 text-center text-sm font-semibold">{val}</span>
         <Button
           variant="outline"
           size="icon"

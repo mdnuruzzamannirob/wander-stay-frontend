@@ -11,6 +11,35 @@ import GuestRow from './GuestRow';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+const DEMO_DESTINATIONS = [
+  { city: "Cox's Bazar", country: 'Bangladesh' },
+  { city: 'Dhaka', country: 'Bangladesh' },
+  { city: 'Sylhet', country: 'Bangladesh' },
+  { city: 'Chittagong', country: 'Bangladesh' },
+  { city: 'Khulna', country: 'Bangladesh' },
+  { city: 'Kuala Lumpur', country: 'Malaysia' },
+  { city: 'Bangkok', country: 'Thailand' },
+  { city: 'Singapore', country: 'Singapore' },
+  { city: 'Jakarta', country: 'Indonesia' },
+  { city: 'Hanoi', country: 'Vietnam' },
+  { city: 'Manila', country: 'Philippines' },
+  { city: 'Yangon', country: 'Myanmar' },
+  { city: 'Phnom Penh', country: 'Cambodia' },
+  { city: 'Vientiane', country: 'Laos' },
+  { city: 'Brunei', country: 'Brunei' },
+  { city: 'Bandar Seri Begawan', country: 'Brunei' },
+  { city: 'Ho Chi Minh City', country: 'Vietnam' },
+  { city: 'Medan', country: 'Indonesia' },
+  { city: 'Surabaya', country: 'Indonesia' },
+  { city: 'Denpasar', country: 'Indonesia' },
+  { city: 'Yogyakarta', country: 'Indonesia' },
+  { city: 'Semarang', country: 'Indonesia' },
+  { city: 'Makassar', country: 'Indonesia' },
+  { city: 'Palembang', country: 'Indonesia' },
+  { city: 'Balikpapan', country: 'Indonesia' },
+  { city: 'Pontianak', country: 'Indonesia' },
+];
+
 export default function SearchBar({ className }: { className?: string }) {
   const router = useRouter();
   const [destination, setDestination] = useState<string | null>(null);
@@ -57,13 +86,7 @@ export default function SearchBar({ className }: { className?: string }) {
 
               {/* Demo destination list */}
               <div className="custom-scrollbar h-full max-h-80 space-y-1 overflow-y-auto">
-                {[
-                  { city: "Cox's Bazar", country: 'Bangladesh' },
-                  { city: 'Dhaka', country: 'Bangladesh' },
-                  { city: 'Sylhet', country: 'Bangladesh' },
-                  { city: 'Kuala Lumpur', country: 'Malaysia' },
-                  { city: 'Bangkok', country: 'Thailand' },
-                ].map((item) => {
+                {DEMO_DESTINATIONS.map((item) => {
                   const value = `${item.city}, ${item.country}`;
                   const active = destination === value;
 
