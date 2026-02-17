@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { BadgeCheck, MapPin, Star } from 'lucide-react';
+import { BadgeCheck, MapPin, Star, Heart, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { Hotel } from '@/types/hotel';
@@ -9,141 +9,120 @@ type HotelCardProps = {
 };
 
 export default function HotelCard({ hotel }: HotelCardProps) {
+  const getRatingStatus = (rating: number) => {
+    if (rating >= 4.8) return 'Exceptional';
+    if (rating >= 4.5) return 'Excellent';
+    return 'Very Good';
+  };
+
   return (
-    <article className="group relative overflow-hidden rounded-2xl border bg-white">
-      {/* Layout wrapper */}
-      <div className="flex h-full flex-col md:h-85 md:flex-row">
-        {/* Media */}
-        <div className="relative md:w-64 md:shrink-0">
-          <Image
-            src={hotel.image}
-            alt={hotel.name}
-            width={640}
-            height={480}
-            className="h-56 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] md:h-full"
-            loading="lazy"
-          />
+    <article className="group relative flex flex-col overflow-hidden rounded-2xl border bg-white md:h-90 md:flex-row">
+      {/* --- Media Section --- */}
+      <div className="relative h-70 w-full shrink-0 overflow-hidden md:h-full md:w-80">
+        <Image
+          src={hotel.image}
+          alt={hotel.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
 
-          {/* Top overlays */}
-          <div className="absolute inset-0 bg-linear-to-t from-black/30 via-black/0 to-black/0" />
+        {/* Floating Badges  */}
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-start justify-between p-3">
+          <div className="flex w-full items-start justify-between">
+            {hotel.tag && (
+              <span className="pointer-events-auto rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
+                {hotel.tag}
+              </span>
+            )}
+            <button className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-slate-900 backdrop-blur-md transition-all hover:bg-white hover:text-red-500">
+              <Heart className="size-5" />
+            </button>
+          </div>
 
-          {/* Tag pill */}
-          {hotel.tag ? (
-            <span className="absolute top-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-800 backdrop-blur">
-              {hotel.tag}
+          <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white bg-white/95 px-2 py-1.5 shadow backdrop-blur-md">
+            <div className="flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-semibold text-white">
+              <Star className="size-2.5 fill-current leading-0" /> {hotel.rating}
+            </div>
+            <span className="text-foreground text-[11px] font-semibold tracking-tight uppercase">
+              {getRatingStatus(hotel.rating)}
             </span>
-          ) : null}
+          </div>
+        </div>
+      </div>
 
-          {/* Rating chip (mobile-friendly) */}
-          <div className="absolute bottom-4 left-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold backdrop-blur">
-            <Star className="size-4 text-amber-400" />
-            <span>{hotel.rating}</span>
+      {/* --- Content Body --- */}
+      <div className="flex min-w-0 flex-1 flex-col p-5">
+        {/* Header */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-start justify-between gap-4">
+            <h3 className="truncate text-lg leading-tight font-semibold tracking-tight md:text-xl">
+              {hotel.name}
+            </h3>
+            <Badge
+              variant="secondary"
+              className="bg-primary/10 text-primary shrink-0 font-semibold"
+            >
+              {hotel.propertyType}
+            </Badge>
+          </div>
+
+          <div className="text-muted-foreground flex items-center gap-1 text-sm font-medium">
+            <MapPin className="text-primary size-4 shrink-0" />
+            <span className="truncate">
+              {hotel.city}, {hotel.country}
+            </span>
+            <span className="ml-1 shrink-0 font-normal">• {hotel.distanceKm}km to center</span>
           </div>
         </div>
 
-        {/* Body */}
-        <div className="flex min-w-0 flex-1 flex-col p-5">
-          {/* Top */}
-          <div className="min-w-0">
-            <div className="flex w-full items-center gap-2">
-              <h3 className="truncate text-lg font-semibold md:text-xl">{hotel.name}</h3>
+        {/* Dynamic Description (Clamped for Fixed Height) */}
+        <p className="text-muted-foreground mt-3 line-clamp-2 text-sm leading-relaxed md:line-clamp-3">
+          Experience world-class hospitality at{' '}
+          <span className="font-semibold text-slate-800">{hotel.name}</span>. Enjoy premium access
+          to {hotel.amenities.join(', ')} and more, making it an ideal choice for your stay in{' '}
+          {hotel.city}.
+        </p>
 
-              {hotel.propertyType ? (
-                <Badge variant="outline" className="text-[11px]">
-                  {hotel.propertyType}
-                </Badge>
-              ) : null}
+        {/* Amenities */}
+        <div className="mt-3 flex flex-wrap gap-1">
+          {hotel.amenities.map((amenity) => (
+            <div
+              key={amenity}
+              className="text-muted-foreground flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-[10px] font-semibold uppercase"
+            >
+              <div className="h-1 w-1 rounded-full bg-blue-400" />
+              {amenity}
             </div>
+          ))}
+        </div>
 
-            <div className="text-muted-foreground mt-1 flex items-center gap-1 text-sm">
-              <MapPin className="text-primary size-4 shrink-0" />
-              <span title={hotel.city + ', ' + hotel.country} className="truncate">
-                {hotel.city}, {hotel.country}
-              </span>
-
-              {hotel.distanceKm && (
-                <>
-                  <span className="text-muted-foreground inline">•</span>
-                  <span className="inline whitespace-nowrap">{hotel.distanceKm} km to center</span>
-                </>
-              )}
+        {/* Features Row */}
+        <div className="mt-3 flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600">
+            <BadgeCheck className="size-4" />
+            <span>{hotel.payLater ? 'Pay at Property' : 'Instant Confirmation'}</span>
+          </div>
+          {hotel.freeCancellation && (
+            <div className="flex items-center gap-2 text-xs font-semibold text-blue-600">
+              <Clock className="size-4" />
+              <span>Free Cancellation</span>
             </div>
-          </div>
+          )}
+        </div>
 
-          {/* Description */}
-          <p className="text-muted-foreground mt-3 line-clamp-3 text-sm">
-            Experience world-class service at{' '}
-            <span className="font-medium text-gray-800">{hotel.name}</span> with curated amenities
-            and effortless check-in. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Doloribus vel sit nulla possimus architecto eaque, veritatis debitis culpa atque officia
-            nam. Iste sequi minima doloribus aliquam dicta beatae. Quae, recusandae!
-          </p>
-
-          {/* Amenities */}
-          <div className="mt-3 flex flex-wrap gap-2">
-            {hotel.amenities.slice(0, 6).map((amenity) => (
-              <Badge
-                key={amenity}
-                variant="secondary"
-                className="bg-slate-50 text-xs text-slate-700"
-              >
-                {amenity}
-              </Badge>
-            ))}
-            {hotel.amenities.length > 6 ? (
-              <span className="text-muted-foreground text-xs font-medium">
-                +{hotel.amenities.length - 6} more
-              </span>
-            ) : null}
-          </div>
-
-          {/* Meta row */}
-          <div className="text-muted-foreground mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
-            {hotel.freeCancellation ? (
-              <Badge variant="secondary" className="bg-emerald-50 text-emerald-700">
-                Free cancellation
-              </Badge>
-            ) : null}
-
-            <span className="inline-flex items-center gap-2">
-              <BadgeCheck className="size-4 text-emerald-600" />
-              <span className="font-medium text-slate-700">
-                {hotel.payLater ? 'Reserve now, pay later' : 'Instant confirmation'}
-              </span>
-            </span>
-          </div>
-
-          {/* Bottom (sticky to bottom) */}
-          <div className="mt-auto pt-5">
-            <div className="h-px w-full bg-slate-200" />
-
-            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              {/* Payment pills */}
-              <div className="flex items-center gap-2">
-                {['Stripe', 'Visa', 'Apple Pay', 'GPay'].map((label) => (
-                  <span
-                    key={label}
-                    className="text-muted-foreground rounded-md border border-slate-200 bg-white px-2 py-1 text-[10px] font-semibold"
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-
-              {/* Price + CTA */}
-              <div className="flex items-center justify-between gap-3 sm:justify-end">
-                <div className="">
-                  <p className="text-muted-foreground text-xs">From</p>
-                  <p className="text-primary text-lg leading-none font-semibold whitespace-nowrap">
-                    ${hotel.price}
-                    <span className="text-muted-foreground text-xs font-medium"> / night</span>
-                  </p>
-                </div>
-
-                <Button className="h-10 rounded-full px-5">Book Now</Button>
-              </div>
+        {/* Footer (Fixed at Bottom) */}
+        <div className="mt-3 flex items-center justify-between gap-4 border-t border-gray-200 pt-4 md:mt-auto">
+          <div className="flex flex-col">
+            <span className="text-muted-foreground text-xs font-medium tracking-wider">From</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-3xl font-bold">${hotel.price}</span>
+              <span className="text-muted-foreground text-xs font-medium">/ night</span>
             </div>
           </div>
+
+          <Button size={'lg'} className="rounded-full font-semibold">
+            Book Now
+          </Button>
         </div>
       </div>
     </article>

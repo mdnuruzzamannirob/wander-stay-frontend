@@ -59,15 +59,13 @@ export default function SearchBar({ className }: { className?: string }) {
                 <MapPin className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex min-w-0 flex-col gap-1 overflow-hidden">
                   <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
-                    Destination
+                    Location
                   </span>
                   <span
                     title={destination ?? ''}
                     className="text-foreground truncate text-sm font-medium"
                   >
-                    {destination || (
-                      <span className="text-muted-foreground">Search destinations</span>
-                    )}
+                    {destination || <span className="text-muted-foreground">Search location</span>}
                   </span>
                 </div>
               </div>
