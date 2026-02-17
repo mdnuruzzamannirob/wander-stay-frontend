@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import GuestRow from './GuestRow';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Label } from '../Label';
 
 const DEMO_DESTINATIONS = [
   { city: "Cox's Bazar", country: 'Bangladesh' },
@@ -58,9 +59,7 @@ export default function SearchBar({ className }: { className?: string }) {
               <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <MapPin className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex min-w-0 flex-col gap-1 overflow-hidden">
-                  <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
-                    Location
-                  </span>
+                  <Label>Location</Label>
                   <span
                     title={destination ?? ''}
                     className="text-foreground truncate text-sm font-medium"
@@ -118,9 +117,7 @@ export default function SearchBar({ className }: { className?: string }) {
               <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <CalendarIcon className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex flex-col gap-1 overflow-hidden">
-                  <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
-                    Check in
-                  </span>
+                  <Label> Check in</Label>
                   <span className="text-foreground truncate text-sm font-medium">
                     {date?.from ? (
                       format(date.from, 'MMM dd')
@@ -154,9 +151,7 @@ export default function SearchBar({ className }: { className?: string }) {
               <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <CalendarIcon className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex flex-col gap-1 overflow-hidden">
-                  <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
-                    Check out
-                  </span>
+                  <Label>Check out</Label>
                   <span className="text-foreground truncate text-sm font-medium">
                     {date?.to ? (
                       format(date.to, 'MMM dd')
@@ -190,9 +185,7 @@ export default function SearchBar({ className }: { className?: string }) {
               <div className="group flex cursor-pointer items-center gap-3 rounded-lg px-5 py-3 text-start transition-all hover:bg-gray-100 lg:rounded-xl">
                 <Users className="text-muted-foreground group-hover:text-primary size-5 shrink-0" />
                 <div className="flex flex-col gap-1 overflow-hidden">
-                  <span className="text-muted-foreground truncate text-[10px] font-bold tracking-wider uppercase">
-                    Guests & Room
-                  </span>
+                  <Label>Guests & Room</Label>
                   <span className="text-foreground truncate text-sm font-medium">
                     {adults + children} {adults + children > 1 ? 'Guests' : 'Guest'}, {rooms}{' '}
                     {rooms > 1 ? 'Rooms' : 'Room'}

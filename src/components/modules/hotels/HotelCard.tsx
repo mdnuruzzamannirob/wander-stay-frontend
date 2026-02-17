@@ -128,7 +128,7 @@ export default function HotelCard({ hotel }: HotelCardProps) {
             </div>
           </div>
 
-          <Button size={'lg'} className="rounded-full font-semibold">
+          <Button size="lg" className="font-semibold">
             Book Now
           </Button>
         </div>

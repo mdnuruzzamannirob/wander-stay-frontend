@@ -17,7 +17,7 @@ export default function Navbar() {
   const hasHydrated = useHasHydrated();
 
   // TODO:  real auth/getMe state
-  const isAuthenticated = false;
+  const isAuthenticated = true;
   const isLoading = false; // getMe loading (only meaningful if isAuthenticated)
 
   const showRightAuthPlaceholder = isAuthenticated && (!hasHydrated || isLoading);

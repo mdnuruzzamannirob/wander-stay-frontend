@@ -163,7 +163,7 @@ export default function HotelsPage() {
   return (
     <div className="bg-gray-50">
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative min-h-80 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -172,19 +172,19 @@ export default function HotelsPage() {
           }}
         />
         <div className="absolute inset-0 bg-linear-to-b from-slate-950/70 via-slate-950/60 to-slate-950/90" />
+
         <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute bottom-10 left-10 h-56 w-56 rounded-full bg-amber-200/20 blur-3xl" />
 
-        <div className="app-container relative py-12 text-white sm:py-16">
-          <div className="flex flex-col items-center gap-4 text-center">
+        <div className="app-container relative flex min-h-70 flex-col items-center justify-center gap-4 py-10 text-white sm:min-h-80 sm:py-12">
+          <div className="flex flex-col items-center gap-3 text-center">
             <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">Search Hotels</h1>
             <p className="max-w-2xl text-sm text-white/80 sm:text-base">
               Find stays that match your budget, location, and travel style.
             </p>
           </div>
-          <div className="mt-8 flex justify-center">
-            <SearchBar />
-          </div>
+
+          <SearchBar className="mt-6" />
         </div>
       </section>
 
