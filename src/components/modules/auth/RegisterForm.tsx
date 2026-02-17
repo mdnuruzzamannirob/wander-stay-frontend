@@ -66,7 +66,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="app-container flex min-h-[calc(100vh-83.38px)] items-center justify-center py-14">
+    <div className="app-container flex min-h-[calc(100vh-85px)] items-center justify-center py-14">
       <div className="border-brand-100 w-full max-w-120 rounded-xl border p-8 shadow-sm">
         {/* Title */}
         <div className="mb-5 flex flex-col items-center text-center">

@@ -29,7 +29,7 @@ export default function Banner() {
   }, [showCookieBar]);
 
   return (
-    <div className="relative min-h-[calc(100vh-83.38px)] text-white">
+    <div className="relative min-h-[calc(100vh-85px)] text-white">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{

@@ -102,8 +102,8 @@ export default function SearchBar({ className }: { className?: string }) {
                     >
                       <MapPin className="size-4 text-slate-400" />
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-slate-900">{item.city}</span>
-                        <span className="text-xs text-slate-500">{item.country}</span>
+                        <span className="text-sm font-medium">{item.city}</span>
+                        <span className="text-muted-foreground text-xs">{item.country}</span>
                       </div>
                     </button>
                   );
