@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CalendarCheck, Calendar, ChevronRight, Clock, AlertTriangle, Luggage } from 'lucide-react';
+import { CalendarCheck, Calendar, Clock, AlertTriangle, Luggage } from 'lucide-react';
 import { toast } from 'sonner';
+import PageHero from '@/components/shared/PageHero';
 import BookingCard, { BookingCardSkeleton } from '@/components/modules/bookings/BookingCard';
 import { ACTIVE_BOOKINGS, type Booking } from '@/lib/constants/bookings-data';
 
@@ -38,25 +39,13 @@ export default function MyBookingsPage() {
   const cancelled = bookings.filter((b) => b.status === 'cancelled');
 
   return (
-    <div className="bg-gray-50 pb-12 sm:pb-16">
-      <section className="app-container py-6 sm:py-8">
-        {/* Breadcrumb */}
-        <nav className="mb-5 flex items-center gap-1.5 text-sm">
-          <Link href="/" className="text-muted-foreground hover:text-primary transition">
-            Home
-          </Link>
-          <ChevronRight className="text-muted-foreground size-3.5" />
-          <span className="text-foreground font-medium">My Bookings</span>
-        </nav>
+    <>
+      <PageHero
+        title="My Bookings"
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'My Bookings' }]}
+      />
 
-        {/* Page title */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">My Bookings</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Manage your upcoming and active hotel reservations
-          </p>
-        </div>
-
+      <section className="app-container py-16 sm:py-20">
         {/* Summary cards */}
         <div className="mb-6 grid grid-cols-3 gap-3 sm:mb-8 sm:gap-4">
           <SummaryCard
@@ -98,7 +87,7 @@ export default function MyBookingsPage() {
           )}
         </div>
       </section>
-    </div>
+    </>
   );
 }
 

@@ -3,20 +3,21 @@ import { BookingCardSkeleton } from '@/components/modules/bookings/BookingCard';
 export default function BookingsHistoryLoading() {
   return (
     <div className="bg-gray-50 pb-12 sm:pb-16">
-      <section className="app-container py-6 sm:py-8">
-        {/* Breadcrumb skeleton */}
-        <div className="mb-5 flex items-center gap-1.5">
-          <div className="h-4 w-10 animate-pulse rounded bg-gray-200" />
-          <div className="size-3.5 animate-pulse rounded bg-gray-200" />
-          <div className="h-4 w-32 animate-pulse rounded bg-gray-200" />
+      {/* Hero skeleton */}
+      <div className="relative min-h-70 sm:min-h-80">
+        <div className="absolute inset-0 animate-pulse bg-gray-300" />
+        <div className="absolute inset-0 bg-linear-to-b from-gray-900/80 via-gray-900/70 to-gray-950/90" />
+        <div className="app-container relative flex min-h-70 flex-col items-center justify-center gap-4 sm:min-h-80">
+          <div className="h-9 w-52 animate-pulse rounded-lg bg-white/20 sm:h-11 sm:w-64" />
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-12 animate-pulse rounded bg-white/10" />
+            <div className="size-4 animate-pulse rounded bg-white/10" />
+            <div className="h-4 w-32 animate-pulse rounded bg-white/10" />
+          </div>
         </div>
+      </div>
 
-        {/* Heading skeleton */}
-        <div className="mb-6 sm:mb-8">
-          <div className="h-7 w-48 animate-pulse rounded bg-gray-200 sm:h-9 sm:w-60" />
-          <div className="mt-2 h-4 w-64 animate-pulse rounded bg-gray-100 sm:w-80" />
-        </div>
-
+      <section className="app-container -mt-8 sm:-mt-10">
         {/* Stats skeletons */}
         <div className="mb-6 grid grid-cols-2 gap-3 sm:mb-8 sm:grid-cols-4 sm:gap-4">
           {Array.from({ length: 4 }).map((_, i) => (

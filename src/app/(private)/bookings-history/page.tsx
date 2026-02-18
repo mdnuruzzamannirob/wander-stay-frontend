@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { History, Search, Calendar, ChevronRight } from 'lucide-react';
+import { History, Search, Calendar } from 'lucide-react';
+import PageHero from '@/components/shared/PageHero';
 import BookingCard, { BookingCardSkeleton } from '@/components/modules/bookings/BookingCard';
 import { PAST_BOOKINGS } from '@/lib/constants/bookings-data';
 
@@ -55,25 +56,13 @@ export default function BookingsHistoryPage() {
   );
 
   return (
-    <div className="bg-gray-50 pb-12 sm:pb-16">
-      <section className="app-container py-6 sm:py-8">
-        {/* Breadcrumb */}
-        <nav className="mb-5 flex items-center gap-1.5 text-sm">
-          <Link href="/" className="text-muted-foreground hover:text-primary transition">
-            Home
-          </Link>
-          <ChevronRight className="text-muted-foreground size-3.5" />
-          <span className="text-foreground font-medium">Bookings History</span>
-        </nav>
+    <>
+      <PageHero
+        title="Bookings History"
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Bookings History' }]}
+      />
 
-        {/* Page title */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Bookings History</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            View your past reservations and booking records
-          </p>
-        </div>
-
+      <section className="app-container py-16 sm:py-20">
         {/* Stats row */}
         <div className="mb-6 grid grid-cols-2 gap-3 sm:mb-8 sm:grid-cols-4 sm:gap-4">
           <StatCard label="Total Bookings" value={isLoading ? '–' : PAST_BOOKINGS.length} />
@@ -149,7 +138,7 @@ export default function BookingsHistoryPage() {
           )}
         </div>
       </section>
-    </div>
+    </>
   );
 }
 

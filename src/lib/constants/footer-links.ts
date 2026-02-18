@@ -2,9 +2,9 @@ import { Facebook, Twitter, Instagram, Mail, MapPin, Phone } from 'lucide-react'
 
 export const footerLinks = {
   help: [
-    { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about-us' },
     { label: 'Contact Us', href: '/contact-us' },
+    { label: 'FAQ', href: '/faq' },
   ],
   legal: [
     { label: 'Privacy Policy', href: '/privacy-policy' },
