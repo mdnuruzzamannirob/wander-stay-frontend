@@ -8,4 +8,4 @@ export { default as DualRangeSlider } from './DualRangeSlider';
 export { default as ReviewCard } from './ReviewCard';
 export { default as ReviewSection } from './ReviewSection';
 export { default as RoomCard } from './RoomCard';
-export { RoomCardSkeleton } from './RoomCard';
+export { default as RoomCardSkeleton } from './RoomCardSkeleton';
