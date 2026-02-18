@@ -257,6 +257,28 @@ const RegisterForm = () => {
             )}
           </div>
 
+          {/* Terms */}
+          <div>
+            <label className="text-muted-foreground flex cursor-pointer items-start gap-3 text-sm select-none">
+              <Checkbox
+                id="agree"
+                // checked={agreeTermsField.value}
+                // onCheckedChange={agreeTermsField.onChange}
+                disabled={isLoading}
+                className="size-5"
+              />
+
+              <span>Send me exclusive deals and price alerts</span>
+            </label>
+
+            {/* {errors.agreeTerms && (
+              <div className="mt-1 flex items-center gap-1 text-xs text-red-500">
+                <AlertCircle size={14} />
+                {errors.agreeTerms.message}
+              </div>
+            )} */}
+          </div>
+
           {/* Submit */}
           <ButtonComp
             type="submit"
