@@ -215,7 +215,16 @@ export default function SearchBar({ className }: { className?: string }) {
         {/* 5. Search Button */}
         <button
           type="button"
-          onClick={() => router.push('/hotels')}
+          onClick={() => {
+            const params = new URLSearchParams();
+            if (destination) params.set('destination', destination);
+            if (date?.from) params.set('checkIn', format(date.from, 'yyyy-MM-dd'));
+            if (date?.to) params.set('checkOut', format(date.to, 'yyyy-MM-dd'));
+            params.set('adults', String(adults));
+            params.set('children', String(children));
+            params.set('rooms', String(rooms));
+            router.push(`/hotels?${params.toString()}`);
+          }}
           className="bg-primary hover:bg-primary/90 flex items-center justify-center gap-2 rounded-lg px-6 py-3 transition lg:rounded-xl"
         >
           <Search className="size-5 shrink-0 stroke-[2.5px]" />

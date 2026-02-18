@@ -233,15 +233,38 @@ export default function CheckoutForm({ bookingData }: CheckoutFormProps) {
   };
 
   /* Final submit */
-  const onSubmit = async (_data: CheckoutFormData) => {
+  const onSubmit = async (data: CheckoutFormData) => {
     setIsProcessing(true);
     try {
-      // Simulate API call
+      // Simulate API call — replace with actual createBooking mutation
       await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Store form data in sessionStorage for confirmation page
+      const confirmationPayload = {
+        guest: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          specialRequests: data.specialRequests || '',
+        },
+        booking: bookingData,
+        paymentMethod: data.paymentMethod,
+      };
+      sessionStorage.setItem('bookingConfirmation', JSON.stringify(confirmationPayload));
+
       toast.success('Booking confirmed successfully!');
-      router.push(
-        `/booking-confirmation?bookingId=BK-${Date.now()}&hotelId=${bookingData.hotelId}&roomId=${bookingData.room.id}`,
-      );
+
+      const params = new URLSearchParams();
+      params.set('bookingId', `BK-${Date.now()}`);
+      params.set('hotelId', bookingData.hotelId);
+      params.set('roomId', bookingData.room.id);
+      params.set('checkIn', bookingData.dates.checkIn);
+      params.set('checkOut', bookingData.dates.checkOut);
+      params.set('guests', String(bookingData.guests));
+      params.set('nights', String(bookingData.dates.nights));
+
+      router.push(`/booking-confirmation?${params.toString()}`);
     } catch {
       toast.error('Something went wrong. Please try again.');
     } finally {

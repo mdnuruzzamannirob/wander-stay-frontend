@@ -7,9 +7,10 @@ import type { Hotel } from '@/types/hotel';
 
 type HotelCardProps = {
   hotel: Hotel;
+  searchContext?: string;
 };
 
-export default function HotelCard({ hotel }: HotelCardProps) {
+export default function HotelCard({ hotel, searchContext }: HotelCardProps) {
   const getRatingStatus = (rating: number) => {
     if (rating >= 4.8) return 'Exceptional';
     if (rating >= 4.5) return 'Excellent';
@@ -20,7 +21,7 @@ export default function HotelCard({ hotel }: HotelCardProps) {
   };
 
   return (
-    <Link href={`/hotels/${hotel.id}`} className="block">
+    <Link href={`/hotels/${hotel.id}${searchContext ? `?${searchContext}` : ''}`} className="block">
       <article className="group relative flex flex-col overflow-hidden rounded-2xl border bg-white md:h-90 md:flex-row">
         {/* --- Media Section --- */}
         <div className="relative h-70 w-full shrink-0 overflow-hidden md:h-full md:w-80">

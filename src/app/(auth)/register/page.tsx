@@ -1,4 +1,4 @@
-import RegisterForm from '@/components/modules/auth/RegisterForm';
+import { RegisterForm } from '@/components/modules/auth';
 
 export const metadata = {
   title: 'Register - WanderStay',

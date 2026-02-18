@@ -1,6 +1,7 @@
 import { BadgeCheck, MapPin, Star } from 'lucide-react';
 import TitleSection from '../../shared/TitleSection';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 
@@ -79,67 +80,73 @@ export default function FeaturedHotels() {
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {hotels.map((hotel) => (
-            <article
+            <Link
               key={hotel.name}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm"
+              href={`/hotels?destination=${encodeURIComponent(hotel.city)}`}
+              className="block"
             >
-              <div className="relative">
-                <Image
-                  src={hotel.image}
-                  alt={hotel.name}
-                  width={400}
-                  height={300}
-                  className="h-52 w-full cursor-pointer object-cover transition duration-500 group-hover:scale-[1.02]"
-                  loading="lazy"
-                />
-                <span className="absolute top-4 right-4 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-gray-700">
-                  {hotel.tag}
-                </span>
-              </div>
-
-              <div className="flex-1 p-5">
-                <div className="flex min-w-0 items-start justify-between gap-2">
-                  <h3 title={hotel.name} className="cursor-pointer truncate text-lg font-semibold">
-                    {hotel.name}
-                  </h3>
-                  <span className="flex items-center gap-1 text-sm font-semibold">
-                    <Star className="size-4 text-amber-400" />
-                    {hotel.rating}
+              <article className="group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm">
+                <div className="relative">
+                  <Image
+                    src={hotel.image}
+                    alt={hotel.name}
+                    width={400}
+                    height={300}
+                    className="h-52 w-full cursor-pointer object-cover transition duration-500 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                  <span className="absolute top-4 right-4 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-gray-700">
+                    {hotel.tag}
                   </span>
                 </div>
 
-                <div className="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
-                  <MapPin className="size-4 shrink-0" />
-                  {hotel.city}
-                </div>
-
-                <p className="text-muted-foreground my-3 text-sm">
-                  Experience world-class service in a refined setting with curated amenities.
-                </p>
-
-                <Separator />
-
-                <ul className="text-muted-foreground my-4 space-y-2 text-xs">
-                  {hotel.perks.map((perk) => (
-                    <li key={perk} className="flex items-center gap-2">
-                      <BadgeCheck className="size-4 text-emerald-500" />
-                      {perk}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-auto flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-muted-foreground text-xs">From</p>
-                    <p className="text-xl font-semibold">
-                      ${hotel.price}
-                      <span className="text-muted-foreground text-xs font-medium">/night</span>
-                    </p>
+                <div className="flex-1 p-5">
+                  <div className="flex min-w-0 items-start justify-between gap-2">
+                    <h3
+                      title={hotel.name}
+                      className="cursor-pointer truncate text-lg font-semibold"
+                    >
+                      {hotel.name}
+                    </h3>
+                    <span className="flex items-center gap-1 text-sm font-semibold">
+                      <Star className="size-4 text-amber-400" />
+                      {hotel.rating}
+                    </span>
                   </div>
-                  <Button className="rounded-full">Book Now</Button>
+
+                  <div className="text-muted-foreground mt-0.5 flex items-center gap-1 text-xs">
+                    <MapPin className="size-4 shrink-0" />
+                    {hotel.city}
+                  </div>
+
+                  <p className="text-muted-foreground my-3 text-sm">
+                    Experience world-class service in a refined setting with curated amenities.
+                  </p>
+
+                  <Separator />
+
+                  <ul className="text-muted-foreground my-4 space-y-2 text-xs">
+                    {hotel.perks.map((perk) => (
+                      <li key={perk} className="flex items-center gap-2">
+                        <BadgeCheck className="size-4 text-emerald-500" />
+                        {perk}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-muted-foreground text-xs">From</p>
+                      <p className="text-xl font-semibold">
+                        ${hotel.price}
+                        <span className="text-muted-foreground text-xs font-medium">/night</span>
+                      </p>
+                    </div>
+                    <Button className="rounded-full">Book Now</Button>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           ))}
         </div>
       </div>

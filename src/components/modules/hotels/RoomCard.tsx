@@ -1,13 +1,15 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { BadgeCheck, BedDouble, Clock, Maximize2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { HotelRoom } from '@/lib/constants/hotel-details-data';
 
 type RoomCardProps = {
   room: HotelRoom;
+  checkoutHref?: string;
 };
 
-export default function RoomCard({ room }: RoomCardProps) {
+export default function RoomCard({ room, checkoutHref }: RoomCardProps) {
   const discount = Math.round(((room.originalPrice - room.price) / room.originalPrice) * 100);
 
   return (
@@ -102,7 +104,13 @@ export default function RoomCard({ room }: RoomCardProps) {
               <span className="text-muted-foreground text-xs font-medium">/ night</span>
             </div>
           </div>
-          <Button className="text-xs font-semibold sm:text-sm">Select Room</Button>
+          {checkoutHref ? (
+            <Link href={checkoutHref}>
+              <Button className="text-xs font-semibold sm:text-sm">Select Room</Button>
+            </Link>
+          ) : (
+            <Button className="text-xs font-semibold sm:text-sm">Select Room</Button>
+          )}
         </div>
       </div>
     </div>

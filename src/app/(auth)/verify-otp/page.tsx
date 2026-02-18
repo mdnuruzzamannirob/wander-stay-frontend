@@ -1,4 +1,4 @@
-import VerifyOtpForm from '@/components/modules/auth/VerifyOtpForm';
+import { VerifyOtpForm } from '@/components/modules/auth';
 
 export const metadata = {
   title: 'Verify Otp - WanderStay',

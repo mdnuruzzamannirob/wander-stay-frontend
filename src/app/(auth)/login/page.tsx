@@ -1,4 +1,4 @@
-import LoginForm from '@/components/modules/auth/LoginForm';
+import { LoginForm } from '@/components/modules/auth';
 
 export const metadata = {
   title: 'Login - WanderStay',

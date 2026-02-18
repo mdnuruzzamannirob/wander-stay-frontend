@@ -1,4 +1,4 @@
-import ResetPasswordForm from '@/components/modules/auth/ResetPasswordForm';
+import { ResetPasswordForm } from '@/components/modules/auth';
 
 export const metadata = {
   title: 'Reset Password - WanderStay',

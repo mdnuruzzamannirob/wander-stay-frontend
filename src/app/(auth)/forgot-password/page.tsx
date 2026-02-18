@@ -1,4 +1,4 @@
-import ForgotPasswordForm from '@/components/modules/auth/ForgotPasswordForm';
+import { ForgotPasswordForm } from '@/components/modules/auth';
 
 export const metadata = {
   title: 'Forgot Password - WanderStay',

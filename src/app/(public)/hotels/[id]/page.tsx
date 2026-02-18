@@ -49,11 +49,31 @@ function getRatingStatus(rating: number) {
 
 type PageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default async function HotelDetailsPage({ params }: PageProps) {
+export default async function HotelDetailsPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const sp = await searchParams;
   const hotel = getHotelById(id);
+
+  if (!hotel) notFound();
+
+  // Read search context from URL params
+  const checkIn = (sp.checkIn as string) || '';
+  const checkOut = (sp.checkOut as string) || '';
+  const guests = parseInt((sp.guests as string) || '2', 10);
+
+  // Build checkout URL helper
+  const buildCheckoutUrl = (roomId: string) => {
+    const params = new URLSearchParams();
+    params.set('hotelId', hotel.id);
+    params.set('roomId', roomId);
+    if (checkIn) params.set('checkIn', checkIn);
+    if (checkOut) params.set('checkOut', checkOut);
+    params.set('guests', String(guests));
+    return `/checkout?${params.toString()}`;
+  };
 
   if (!hotel) notFound();
 
@@ -271,11 +291,23 @@ export default async function HotelDetailsPage({ params }: PageProps) {
             <Separator />
 
             <div className="flex flex-col gap-2.5">
-              <Button size="lg" className="w-full text-base font-semibold">
-                Reserve Now
-              </Button>
-              <Button variant="outline" size="lg" className="w-full font-semibold">
-                Check Availability
+              <Link href={buildCheckoutUrl(rooms[0].id)}>
+                <Button size="lg" className="w-full text-base font-semibold">
+                  Reserve Now
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full font-semibold"
+                onClick={() => {
+                  document
+                    .getElementById('available-rooms')
+                    ?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                asChild
+              >
+                <a href="#available-rooms">Check Availability</a>
               </Button>
             </div>
 
@@ -304,7 +336,7 @@ export default async function HotelDetailsPage({ params }: PageProps) {
       </section>
 
       {/* ---- Available Rooms ---- */}
-      <section className="mt-14">
+      <section id="available-rooms" className="mt-14 scroll-mt-24">
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-xl font-bold tracking-tight">Available Rooms</h2>
@@ -316,7 +348,7 @@ export default async function HotelDetailsPage({ params }: PageProps) {
 
         <div className="flex flex-col gap-4">
           {rooms.map((room) => (
-            <RoomCard key={room.id} room={room} />
+            <RoomCard key={room.id} room={room} checkoutHref={buildCheckoutUrl(room.id)} />
           ))}
         </div>
       </section>
@@ -382,7 +414,9 @@ export default async function HotelDetailsPage({ params }: PageProps) {
           Lock in the best rate for {hotel.name}. Prices may increase — secure your room today!
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
-          <Button className="h-12 px-6">Book Now — from ${hotel.price}/night</Button>
+          <Link href={buildCheckoutUrl(rooms[0].id)}>
+            <Button className="h-12 px-6">Book Now — from ${hotel.price}/night</Button>
+          </Link>
           <Link href="/hotels">
             <Button variant="secondary" className="h-12 px-6">
               Browse More Hotels

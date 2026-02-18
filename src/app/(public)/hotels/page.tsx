@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import SearchBar from '@/components/shared/searchbar/SearchBar';
 import {
   HotelCard,
@@ -26,7 +27,62 @@ const DEFAULT_FILTERS: HotelFiltersState = {
 };
 
 export default function HotelsPage() {
-  const [filters, setFilters] = useState<HotelFiltersState>(DEFAULT_FILTERS);
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-gray-50">
+          <section className="relative min-h-80 overflow-hidden">
+            <div className="absolute inset-0 animate-pulse bg-gray-200" />
+          </section>
+          <section className="app-container py-8 sm:py-10">
+            <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+              <aside className="hidden lg:block">
+                <div className="h-150 animate-pulse rounded-2xl bg-gray-200" />
+              </aside>
+              <div className="space-y-5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <HotelCardSkeleton key={i} />
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      }
+    >
+      <HotelsContent />
+    </Suspense>
+  );
+}
+
+function HotelsContent() {
+  const searchParams = useSearchParams();
+
+  // Read search context from URL (passed from SearchBar)
+  const urlDestination = searchParams.get('destination') ?? '';
+  const urlCheckIn = searchParams.get('checkIn') ?? '';
+  const urlCheckOut = searchParams.get('checkOut') ?? '';
+  const urlAdults = searchParams.get('adults') ?? '';
+  const urlChildren = searchParams.get('children') ?? '';
+  const urlRooms = searchParams.get('rooms') ?? '';
+
+  // Build search context to forward to hotel detail pages
+  const searchContext = useMemo(() => {
+    const params = new URLSearchParams();
+    if (urlCheckIn) params.set('checkIn', urlCheckIn);
+    if (urlCheckOut) params.set('checkOut', urlCheckOut);
+    const totalGuests = parseInt(urlAdults || '2', 10) + parseInt(urlChildren || '0', 10);
+    params.set('guests', String(totalGuests));
+    if (urlRooms) params.set('rooms', urlRooms);
+    return params.toString();
+  }, [urlCheckIn, urlCheckOut, urlAdults, urlChildren, urlRooms]);
+
+  // Extract city name from destination (e.g. "Miami, USA" → "Miami")
+  const destinationCity = urlDestination ? urlDestination.split(',')[0].trim() : '';
+
+  const [filters, setFilters] = useState<HotelFiltersState>({
+    ...DEFAULT_FILTERS,
+    query: destinationCity,
+  });
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
   const [page, setPage] = useState(1);
 
@@ -216,7 +272,10 @@ export default function HotelsPage() {
                   <HotelCardSkeleton key={`skeleton-${i}`} />
                 ))}
 
-              {!isLoading && pageHotels.map((hotel) => <HotelCard key={hotel.id} hotel={hotel} />)}
+              {!isLoading &&
+                pageHotels.map((hotel) => (
+                  <HotelCard key={hotel.id} hotel={hotel} searchContext={searchContext} />
+                ))}
             </div>
 
             {/* Empty state */}
