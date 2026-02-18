@@ -11,7 +11,7 @@ export default function RoomCard({ room }: RoomCardProps) {
   const discount = Math.round(((room.originalPrice - room.price) / room.originalPrice) * 100);
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white transition-all hover:border-gray-200 hover:shadow-lg sm:flex-row">
+    <div className="group flex flex-col overflow-hidden rounded-2xl border bg-white sm:flex-row">
       {/* Room Image */}
       <div className="relative h-52 w-full shrink-0 overflow-hidden sm:h-auto sm:w-64">
         <Image

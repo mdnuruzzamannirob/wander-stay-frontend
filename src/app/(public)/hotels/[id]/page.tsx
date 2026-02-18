@@ -27,7 +27,6 @@ import {
   BabyIcon,
 } from 'lucide-react';
 import Link from 'next/link';
-
 // import PageHero from '@/components/shared/PageHero';
 import HotelGallery from '@/components/modules/hotels/HotelGallery';
 import RoomCard from '@/components/modules/hotels/RoomCard';
@@ -35,7 +34,6 @@ import ReviewCard from '@/components/modules/hotels/ReviewCard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-
 import { getHotelById } from '@/lib/utils/getHotelById';
 import {
   DEFAULT_GALLERY,
@@ -155,7 +153,7 @@ export default async function HotelDetailsPage({ params }: PageProps) {
                 </div>
 
                 {/* Rating Chip */}
-                <div className="flex shrink-0 items-center gap-3 rounded-xl border bg-white px-4 py-2.5 shadow-sm">
+                <div className="flex shrink-0 items-center gap-3 rounded-xl border bg-white px-4 py-2.5">
                   <div className="flex items-center gap-1 rounded-lg bg-amber-400 px-2.5 py-1 text-xs font-bold text-white">
                     <Star className="size-3 fill-current" /> {hotel.rating}
                   </div>
@@ -283,9 +281,9 @@ export default async function HotelDetailsPage({ params }: PageProps) {
           </div>
 
           {/* ---- Sticky Sidebar — 1/3 ---- */}
-          <aside className="lg:sticky lg:top-24 lg:self-start">
+          <aside className="lg:sticky lg:top-25 lg:self-start">
             {/* Booking Card */}
-            <div className="flex flex-col gap-5 rounded-2xl border bg-white p-6 shadow-sm">
+            <div className="flex flex-col gap-5 rounded-2xl border bg-white p-6">
               <div className="flex flex-col gap-1">
                 <span className="text-muted-foreground text-[11px] font-semibold tracking-widest uppercase">
                   Starting from
