@@ -4,13 +4,11 @@ export const footerLinks = {
   help: [
     { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about-us' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'Help Center', href: '/help-center' },
+    { label: 'Contact Us', href: '/contact-us' },
   ],
   legal: [
-    { label: 'About Us', href: '/about-us' },
     { label: 'Privacy Policy', href: '/privacy-policy' },
-    { label: 'Terms & Condition', href: '/terms-and-condition' },
+    { label: 'Terms & Condition', href: '/terms-condition' },
     { label: 'Cancellation Policy', href: '/cancellation-policy' },
   ],
 };

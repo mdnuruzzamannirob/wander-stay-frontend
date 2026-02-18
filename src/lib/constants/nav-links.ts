@@ -7,11 +7,6 @@ export const nav = [
     slug: 'home',
   },
   {
-    label: 'Hotels',
-    href: '/hotels',
-    slug: 'hotels',
-  },
-  {
     label: 'About Us',
     href: '/about-us',
     slug: 'about',
