@@ -7,14 +7,17 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { AlertCircle } from 'lucide-react';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { ForgotPasswordFormData, forgotPasswordSchema } from '@/lib/schemas/auth';
-import { useForgotPasswordMutation } from '@/store/features/auth/authApi';
+import { toast } from 'sonner';
+// import { useForgotPasswordMutation } from '@/store/features/auth/authApi';
 
 const ForgotPasswordForm = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [forgotPassword, { isLoading, isSuccess }] = useForgotPasswordMutation();
+  // Demo mode — replace with useForgotPasswordMutation() when API is ready
+  // const [forgotPassword, { isLoading, isSuccess }] = useForgotPasswordMutation();
 
   const {
     register,
@@ -25,18 +28,17 @@ const ForgotPasswordForm = () => {
     mode: 'onChange',
   });
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/verify-otp');
-    }
-  }, [isSuccess, router]);
-
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    const payload = {
-      email: data.email,
-    };
+    setIsLoading(true);
 
-    forgotPassword(payload);
+    // Simulate API delay
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Store email for verify-otp page
+    sessionStorage.setItem('forgotPasswordEmail', data.email);
+    toast.success('OTP sent to your email!');
+    setIsLoading(false);
+    router.push('/verify-otp');
   };
 
   return (

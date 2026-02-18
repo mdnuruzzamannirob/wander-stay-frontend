@@ -11,14 +11,14 @@ import MobileMenu from './MobileMenu';
 import UserMenu from './UserMenu';
 import NotificationBell from './NotificationBell';
 import { RightAuthSkeleton } from '@/components/layout/header/RightAuthSkeleton';
+import { useAppSelector } from '@/store/hook';
 
 export default function Navbar() {
   const pathname = usePathname();
   const hasHydrated = useHasHydrated();
 
-  // TODO:  real auth/getMe state
-  const isAuthenticated = true;
-  const isLoading = false; // getMe loading (only meaningful if isAuthenticated)
+  // Read auth state from Redux (demo mode — populated by AuthInitializer)
+  const { isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
 
   const showRightAuthPlaceholder = isAuthenticated && (!hasHydrated || isLoading);
 

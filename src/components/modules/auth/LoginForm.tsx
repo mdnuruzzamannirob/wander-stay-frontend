@@ -7,18 +7,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { SignInFormData, signInSchema } from '@/lib/schemas/auth';
-import { useSignInMutation } from '@/store/features/auth/authApi';
+import { toast } from 'sonner';
+import { useAppDispatch } from '@/store/hook';
+import { setUser } from '@/store/features/auth/authSlice';
+// import { useSignInMutation } from '@/store/features/auth/authApi';
 
 const LoginForm = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [signIn, { isLoading: isSigningIn, isSuccess }] = useSignInMutation();
+  // Demo mode — replace with useSignInMutation() when API is ready
+  // const [signIn, { isLoading: isSigningIn, isSuccess }] = useSignInMutation();
 
   const {
     register,
@@ -29,21 +35,33 @@ const LoginForm = () => {
     mode: 'onChange',
   });
 
-  const isLoading = isSigningIn || isSubmitting;
+  const onSubmit = async (data: SignInFormData) => {
+    setIsLoading(true);
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/');
-    }
-  }, [isSuccess, router]);
+    // Simulate API delay
+    await new Promise((r) => setTimeout(r, 1200));
 
-  const onSubmit = (data: SignInFormData) => {
-    const payload = {
+    // Demo user — replace with real API response
+    const demoUser = {
+      id: 'demo-user-1',
+      name: 'John Doe',
       email: data.email,
-      password: data.password,
+      role: 'USER' as const,
+      status: 'ACTIVE' as const,
+      type: 'BUYER' as const,
+      profileImage: 'https://i.pravatar.cc/150?img=3',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
-    signIn(payload);
+    // Persist for DemoAuthInitializer
+    localStorage.setItem('authToken', 'demo-token-xyz');
+    localStorage.setItem('userData', JSON.stringify(demoUser));
+
+    dispatch(setUser(demoUser));
+    toast.success('Login successful! Welcome back.');
+    setIsLoading(false);
+    router.push('/');
   };
 
   return (

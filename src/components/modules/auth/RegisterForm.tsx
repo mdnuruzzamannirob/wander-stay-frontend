@@ -8,11 +8,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm, useController, useWatch } from 'react-hook-form';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { SignUpFormData, signUpSchema } from '@/lib/schemas/auth';
-import { useSignUpMutation } from '@/store/features/auth/authApi';
+import { toast } from 'sonner';
+// import { useSignUpMutation } from '@/store/features/auth/authApi';
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -20,8 +21,10 @@ const RegisterForm = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [signUp, { isLoading: isSigningUp, isSuccess }] = useSignUpMutation();
+  // Demo mode — replace with useSignUpMutation() when API is ready
+  // const [signUp, { isLoading: isSigningUp, isSuccess }] = useSignUpMutation();
 
   const {
     register,
@@ -45,24 +48,15 @@ const RegisterForm = () => {
     defaultValue: '',
   });
 
-  const isLoading = isSigningUp || isSubmitting;
+  const onSubmit = async (data: SignUpFormData) => {
+    setIsLoading(true);
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/sign-in');
-    }
-  }, [isSuccess, router]);
+    // Simulate API delay
+    await new Promise((r) => setTimeout(r, 1200));
 
-  const onSubmit = (data: SignUpFormData) => {
-    const payload = {
-      name: data.fullName,
-      email: data.email,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-      isAgreement: data.agreeTerms,
-    };
-
-    signUp(payload);
+    toast.success('Registration successful! Please login.');
+    setIsLoading(false);
+    router.push('/login');
   };
 
   return (

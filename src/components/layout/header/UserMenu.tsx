@@ -7,29 +7,41 @@ import { getInitials } from '@/lib/utils/getInitials';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useLogoutMutation } from '@/store/features/auth/authApi';
+// import { useLogoutMutation } from '@/store/features/auth/authApi';
+import { useAppDispatch, useAppSelector } from '@/store/hook';
+import { clearUser } from '@/store/features/auth/authSlice';
 import { userNav } from '@/lib/constants/nav-links';
+import { toast } from 'sonner';
 
 const UserMenu = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
 
-  const user = {
-    name: 'John Doe',
-    email: 'john@gmail.com',
-    profileImage: 'https://i.pravatar.cc/150?img=3',
+  // Read user from Redux store (populated by demo AuthInitializer)
+  const reduxUser = useAppSelector((state) => state.auth.user);
+  const user = reduxUser ?? {
+    name: 'Guest',
+    email: '',
+    profileImage: '',
   };
 
-  const [logout, { isLoading: isLogoutLoading, isSuccess }] = useLogoutMutation();
-
-  /* Redirect after logout */
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/');
-    }
-  }, [isSuccess, router]);
+  // Demo logout — replace with useLogoutMutation() when API is ready
+  // const [logout, { isLoading: isLogoutLoading, isSuccess }] = useLogoutMutation();
+  const handleLogout = async () => {
+    setIsLogoutLoading(true);
+    await new Promise((r) => setTimeout(r, 500));
+    dispatch(clearUser());
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    toast.success('Logged out successfully');
+    setIsLogoutLoading(false);
+    setIsOpen(false);
+    router.push('/');
+  };
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -83,7 +95,7 @@ const UserMenu = () => {
         <div className="border-t p-3">
           {/* Logout */}
           <button
-            onClick={() => logout()}
+            onClick={handleLogout}
             disabled={isLogoutLoading}
             className="text-destructive flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition outline-none hover:bg-red-50 disabled:cursor-not-allowed"
           >

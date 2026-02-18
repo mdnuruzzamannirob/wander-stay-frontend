@@ -2,7 +2,8 @@
 
 import ButtonComp from '@/components/shared/ButtonComp';
 import Logo from '@/components/shared/Logo';
-import { useVerifyOTPMutation, useResendOtpMutation } from '@/store/features/auth/authApi';
+import { toast } from 'sonner';
+// import { useVerifyOTPMutation, useResendOtpMutation } from '@/store/features/auth/authApi';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
@@ -15,15 +16,12 @@ const VerifyOtpForm = () => {
   );
   const [resendTimer, setResendTimer] = useState(0);
   const [otpValues, setOtpValues] = useState<string[]>(Array(6).fill(''));
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
-  const [verifyOTP, { isLoading, isSuccess }] = useVerifyOTPMutation();
-  const [resend, { isLoading: isResending }] = useResendOtpMutation();
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/reset-password');
-    }
-  }, [isSuccess, router]);
+  // Demo mode — replace with real mutations when API is ready
+  // const [verifyOTP, { isLoading, isSuccess }] = useVerifyOTPMutation();
+  // const [resend, { isLoading: isResending }] = useResendOtpMutation();
 
   useEffect(() => {
     if (!email) {
@@ -82,18 +80,26 @@ const VerifyOtpForm = () => {
       return;
     }
 
-    const payload = {
-      email,
-      verificationCode: otp,
-    };
+    setIsLoading(true);
 
-    verifyOTP(payload);
+    // Simulate API delay
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Store email + OTP so ResetPasswordForm can access them
+    sessionStorage.setItem('resetPasswordEmail', email);
+    sessionStorage.setItem('resetPasswordOTP', otp);
+    toast.success('OTP verified successfully!');
+    setIsLoading(false);
+    router.push('/reset-password');
   };
 
   const handleResendOtp = async () => {
     if (!email || resendTimer !== 0) return;
 
-    resend({ email });
+    setIsResending(true);
+    await new Promise((r) => setTimeout(r, 800));
+    toast.success('OTP resent to your email!');
+    setIsResending(false);
     setResendTimer(60);
   };
 

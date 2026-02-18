@@ -9,7 +9,8 @@ import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { ResetPasswordFormData, resetPasswordSchema } from '@/lib/schemas/auth';
-import { useResetPasswordMutation } from '@/store/features/auth/authApi';
+import { toast } from 'sonner';
+// import { useResetPasswordMutation } from '@/store/features/auth/authApi';
 
 const ResetPasswordForm = () => {
   const router = useRouter();
@@ -22,8 +23,10 @@ const ResetPasswordForm = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [resetPassword, { isLoading, isSuccess }] = useResetPasswordMutation();
+  // Demo mode — replace with useResetPasswordMutation() when API is ready
+  // const [resetPassword, { isLoading, isSuccess }] = useResetPasswordMutation();
 
   const {
     register,
@@ -47,20 +50,22 @@ const ResetPasswordForm = () => {
     }
   }, [email, otp, router]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push('/login');
-    }
-  }, [isSuccess, router]);
-
   const onSubmit = async (data: ResetPasswordFormData) => {
     if (!email || !otp) return;
 
-    const payload = {
-      email,
-      password: data.newPassword,
-    };
-    resetPassword(payload);
+    setIsLoading(true);
+
+    // Simulate API delay
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Clean up session data
+    sessionStorage.removeItem('forgotPasswordEmail');
+    sessionStorage.removeItem('resetPasswordEmail');
+    sessionStorage.removeItem('resetPasswordOTP');
+
+    toast.success('Password reset successfully! Please login.');
+    setIsLoading(false);
+    router.push('/login');
   };
 
   return (

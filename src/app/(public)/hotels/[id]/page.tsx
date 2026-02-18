@@ -296,17 +296,7 @@ export default async function HotelDetailsPage({ params, searchParams }: PagePro
                   Reserve Now
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full font-semibold"
-                onClick={() => {
-                  document
-                    .getElementById('available-rooms')
-                    ?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                asChild
-              >
+              <Button variant="outline" size="lg" className="w-full font-semibold" asChild>
                 <a href="#available-rooms">Check Availability</a>
               </Button>
             </div>
