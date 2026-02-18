@@ -11,13 +11,14 @@ export default function RoomCard({ room }: RoomCardProps) {
   const discount = Math.round(((room.originalPrice - room.price) / room.originalPrice) * 100);
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border bg-white sm:flex-row">
+    <div className="group flex h-auto flex-col overflow-hidden rounded-2xl border bg-white sm:h-57.5 sm:flex-row">
       {/* Room Image */}
-      <div className="relative h-52 w-full shrink-0 overflow-hidden sm:h-auto sm:w-64">
+      <div className="relative h-48 w-full shrink-0 overflow-hidden sm:h-full sm:w-52 md:w-60">
         <Image
           src={room.image}
           alt={room.name}
           fill
+          sizes="(max-width: 640px) 100vw, 240px"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {discount > 0 && (
@@ -28,18 +29,18 @@ export default function RoomCard({ room }: RoomCardProps) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex min-h-0 flex-1 flex-col p-4 sm:py-4 sm:pr-5 sm:pl-4">
         {/* Title & Specs */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
           <div className="flex items-start justify-between gap-3">
-            <h4 className="text-lg font-bold tracking-tight">{room.name}</h4>
+            <h4 className="text-base font-bold tracking-tight sm:text-lg">{room.name}</h4>
             {room.breakfastIncluded && (
               <span className="shrink-0 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[10px] font-semibold text-amber-700">
                 Breakfast incl.
               </span>
             )}
           </div>
-          <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-xs font-medium">
+          <div className="text-muted-foreground flex flex-wrap items-center gap-3 text-[11px] font-medium sm:gap-4 sm:text-xs">
             <span className="flex items-center gap-1.5">
               <Maximize2 className="size-3.5" /> {room.size} m²
             </span>
@@ -53,11 +54,11 @@ export default function RoomCard({ room }: RoomCardProps) {
         </div>
 
         {/* Amenities */}
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="mt-2.5 flex flex-wrap gap-1.5">
           {room.amenities.slice(0, 5).map((a) => (
             <span
               key={a}
-              className="rounded-full border border-gray-100 bg-gray-50/80 px-2.5 py-1 text-[10px] font-semibold text-gray-600 uppercase"
+              className="rounded-full border border-gray-100 bg-gray-50/80 px-2.5 py-0.5 text-[10px] font-semibold text-gray-600 uppercase"
             >
               {a}
             </span>
@@ -70,19 +71,19 @@ export default function RoomCard({ room }: RoomCardProps) {
         </div>
 
         {/* Features */}
-        <div className="mt-3 flex flex-wrap items-center gap-3">
+        <div className="mt-2 flex flex-wrap items-center gap-3">
           {room.freeCancellation && (
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-600">
               <Clock className="size-3.5" /> Free Cancellation
             </div>
           )}
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-600">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-600">
             <BadgeCheck className="size-3.5" /> Instant Confirmation
           </div>
         </div>
 
         {/* Footer: Price + Book */}
-        <div className="mt-5 flex items-end justify-between gap-4 border-t border-dashed border-gray-200 pt-4 sm:mt-auto">
+        <div className="mt-3 flex items-end justify-between gap-4 border-t border-dashed border-gray-200 pt-3 sm:mt-auto">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground text-sm line-through">
@@ -95,11 +96,64 @@ export default function RoomCard({ room }: RoomCardProps) {
               )}
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-extrabold tracking-tight">${room.price}</span>
+              <span className="text-xl font-extrabold tracking-tight sm:text-2xl">
+                ${room.price}
+              </span>
               <span className="text-muted-foreground text-xs font-medium">/ night</span>
             </div>
           </div>
-          <Button className="rounded-full font-semibold">Select Room</Button>
+          <Button className="text-xs font-semibold sm:text-sm">Select Room</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  Skeleton                                                          */
+/* ================================================================== */
+
+export function RoomCardSkeleton() {
+  return (
+    <div className="flex h-auto animate-pulse flex-col overflow-hidden rounded-2xl border bg-white sm:h-57.5 sm:flex-row">
+      {/* Image placeholder */}
+      <div className="h-48 w-full shrink-0 bg-gray-200 sm:h-full sm:w-52 md:w-60" />
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-4 sm:py-4 sm:pr-5 sm:pl-4">
+        {/* Title */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="h-5 w-36 rounded bg-gray-200" />
+          <div className="h-5 w-20 rounded-full bg-gray-100" />
+        </div>
+
+        {/* Specs */}
+        <div className="mt-2.5 flex gap-4">
+          <div className="h-3.5 w-14 rounded bg-gray-100" />
+          <div className="h-3.5 w-14 rounded bg-gray-100" />
+          <div className="h-3.5 w-20 rounded bg-gray-100" />
+        </div>
+
+        {/* Amenities */}
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-5 w-16 rounded-full bg-gray-100" />
+          ))}
+        </div>
+
+        {/* Features */}
+        <div className="mt-2.5 flex gap-3">
+          <div className="h-3.5 w-24 rounded bg-gray-100" />
+          <div className="h-3.5 w-24 rounded bg-gray-100" />
+        </div>
+
+        {/* Footer */}
+        <div className="mt-3 flex items-end justify-between border-t border-dashed border-gray-200 pt-3 sm:mt-auto">
+          <div className="flex flex-col gap-1.5">
+            <div className="h-3 w-12 rounded bg-gray-100" />
+            <div className="h-6 w-20 rounded bg-gray-200" />
+          </div>
+          <div className="h-9 w-24 rounded-full bg-gray-200" />
         </div>
       </div>
     </div>

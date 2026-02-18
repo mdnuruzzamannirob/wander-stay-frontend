@@ -6,4 +6,6 @@ export { default as HotelPagination } from './HotelPagination';
 export { default as HotelSortBar } from './HotelSortBar';
 export { default as DualRangeSlider } from './DualRangeSlider';
 export { default as ReviewCard } from './ReviewCard';
+export { default as ReviewSection } from './ReviewSection';
 export { default as RoomCard } from './RoomCard';
+export { RoomCardSkeleton } from './RoomCard';
