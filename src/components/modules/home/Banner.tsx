@@ -33,8 +33,7 @@ export default function Banner() {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=2000&q=80)',
+          backgroundImage: 'url("/banner.png")',
         }}
       />
       <div className="absolute inset-0 bg-linear-to-b from-gray-900/80 via-gray-900/60 to-gray-950/90" />
