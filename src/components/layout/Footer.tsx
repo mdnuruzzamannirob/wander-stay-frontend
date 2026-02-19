@@ -27,7 +27,7 @@ function FooterColumn({ title, links }: FooterColumnProps) {
 
 export default function Footer() {
   return (
-    <footer className="bg-primary/5 border-primary/10 border-t">
+    <footer className="border-t bg-white">
       <div className="app-container grid grid-cols-1 gap-8 py-14 lg:grid-cols-4">
         {/* Brand */}
         <div>

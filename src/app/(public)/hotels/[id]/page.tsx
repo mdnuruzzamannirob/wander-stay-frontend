@@ -146,9 +146,9 @@ export default async function HotelDetailsPage({ params, searchParams }: PagePro
 
             {/* Quick Action Buttons */}
             <div className="flex flex-wrap gap-2 pt-1">
-              <Button variant="outline" size="sm" className="gap-2 rounded-full">
+              {/* <Button variant="outline" size="sm" className="gap-2 rounded-full">
                 <Heart className="size-4" /> Save
-              </Button>
+              </Button> */}
               <Button variant="outline" size="sm" className="gap-2 rounded-full">
                 <Share2 className="size-4" /> Share
               </Button>

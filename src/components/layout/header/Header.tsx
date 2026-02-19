@@ -24,7 +24,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="app-container relative flex items-center justify-between gap-3 py-3 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+      <div className="app-container relative flex items-center justify-between gap-3 py-1 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center">
         {/* Left */}
         <div className="flex items-center lg:justify-self-start">
           <MobileMenu />

@@ -34,19 +34,19 @@ export default function HotelCard({ hotel, searchContext }: HotelCardProps) {
 
           {/* Floating Badges  */}
           <div className="pointer-events-none absolute inset-0 flex flex-col items-start justify-between p-3">
-            <div className="flex w-full items-start justify-between">
-              {hotel.tag && (
-                <span className="pointer-events-auto rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
-                  {hotel.tag}
-                </span>
-              )}
-              <button
+            {hotel.tag && (
+              <span className="pointer-events-auto rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
+                {hotel.tag}
+              </span>
+            )}
+            {/* <div className="flex w-full items-start justify-between">
+               <button
                 onClick={(e) => e.preventDefault()}
                 className="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-slate-900 backdrop-blur-md transition-all hover:bg-white hover:text-red-500"
               >
                 <Heart className="size-5" />
-              </button>
-            </div>
+              </button> 
+            </div>*/}
 
             <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-white bg-white/95 px-1.5 py-1 shadow backdrop-blur-md">
               <div className="flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-semibold text-white">
