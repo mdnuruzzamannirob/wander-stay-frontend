@@ -2,7 +2,15 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { History, Search, Calendar } from 'lucide-react';
+import {
+  History,
+  Search,
+  Calendar,
+  ClipboardList,
+  CheckCircle2,
+  XCircle,
+  DollarSign,
+} from 'lucide-react';
 import PageHero from '@/components/shared/PageHero';
 import BookingCard, { BookingCardSkeleton } from '@/components/modules/bookings/BookingCard';
 import { PAST_BOOKINGS } from '@/lib/constants/bookings-data';
@@ -65,12 +73,29 @@ export default function BookingsHistoryPage() {
       <section className="app-container py-16 sm:py-20">
         {/* Stats row */}
         <div className="mb-6 grid grid-cols-2 gap-3 sm:mb-8 sm:grid-cols-4 sm:gap-4">
-          <StatCard label="Total Bookings" value={isLoading ? '–' : PAST_BOOKINGS.length} />
-          <StatCard label="Completed" value={isLoading ? '–' : completedCount} />
-          <StatCard label="Cancelled" value={isLoading ? '–' : cancelledCount} />
+          <StatCard
+            label="Total Bookings"
+            value={isLoading ? '–' : PAST_BOOKINGS.length}
+            icon={<ClipboardList className="size-5" />}
+            accent="blue"
+          />
+          <StatCard
+            label="Completed"
+            value={isLoading ? '–' : completedCount}
+            icon={<CheckCircle2 className="size-5" />}
+            accent="emerald"
+          />
+          <StatCard
+            label="Cancelled"
+            value={isLoading ? '–' : cancelledCount}
+            icon={<XCircle className="size-5" />}
+            accent="red"
+          />
           <StatCard
             label="Total Spent"
             value={isLoading ? '–' : `$${totalSpent.toLocaleString()}`}
+            icon={<DollarSign className="size-5" />}
+            accent="amber"
           />
         </div>
 
@@ -143,11 +168,42 @@ export default function BookingsHistoryPage() {
 }
 
 /* ─── Stat card ─── */
-function StatCard({ label, value }: { label: string; value: number | string }) {
+function StatCard({
+  label,
+  value,
+  icon,
+  accent,
+}: {
+  label: string;
+  value: number | string;
+  icon: React.ReactNode;
+  accent: 'blue' | 'emerald' | 'red' | 'amber';
+}) {
+  const styles = {
+    blue: 'bg-blue-50 border-blue-100 text-blue-600',
+    emerald: 'bg-emerald-50 border-emerald-100 text-emerald-600',
+    red: 'bg-red-50 border-red-100 text-red-600',
+    amber: 'bg-amber-50 border-amber-100 text-amber-600',
+  };
+
+  const iconBg = {
+    blue: 'bg-blue-100 text-blue-600',
+    emerald: 'bg-emerald-100 text-emerald-600',
+    red: 'bg-red-100 text-red-600',
+    amber: 'bg-amber-100 text-amber-600',
+  };
+
   return (
-    <div className="rounded-xl border bg-white p-3 sm:rounded-2xl sm:p-5">
-      <p className="text-muted-foreground text-xs sm:text-sm">{label}</p>
-      <p className="mt-0.5 text-lg font-bold sm:mt-1 sm:text-2xl">{value}</p>
+    <div
+      className={`flex items-center gap-3 rounded-xl border p-3 sm:gap-4 sm:rounded-2xl sm:p-5 ${styles[accent]}`}
+    >
+      <div className={`hidden rounded-lg p-2 sm:block sm:rounded-xl sm:p-2.5 ${iconBg[accent]}`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-lg font-bold sm:text-2xl">{value}</p>
+        <p className="text-muted-foreground text-xs sm:text-sm">{label}</p>
+      </div>
     </div>
   );
 }
@@ -168,7 +224,7 @@ function EmptyState({ query, tab }: { query: string; tab: FilterTab }) {
             : "You haven't made any bookings yet. Start exploring!"}
       </p>
       <Link
-        href="/hotels"
+        href="/"
         className="bg-primary hover:bg-primary/90 mt-5 inline-flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-medium text-white transition sm:mt-6 sm:px-6 sm:py-2.5"
       >
         <Calendar className="size-4" /> Explore Hotels

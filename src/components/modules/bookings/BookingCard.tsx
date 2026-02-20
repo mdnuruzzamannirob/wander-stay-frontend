@@ -6,38 +6,54 @@ import {
   BadgeCheck,
   Bed,
   Calendar,
+  CheckCircle2,
   CreditCard,
   MapPin,
   Moon,
   Star,
   Users,
   XCircle,
+  AlertCircle,
+  Clock,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { Booking, BookingStatus } from '@/lib/constants/bookings-data';
 
 /* ─── Status badge styling ─── */
-const statusConfig: Record<BookingStatus, { label: string; className: string }> = {
+const statusConfig: Record<
+  BookingStatus,
+  { label: string; className: string; bgClassName: string; icon: React.ReactNode }
+> = {
   confirmed: {
     label: 'Confirmed',
     className: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    bgClassName: 'border-l-emerald-500',
+    icon: <CheckCircle2 className="size-3.5" />,
   },
   'checked-in': {
     label: 'Checked In',
     className: 'bg-blue-100 text-blue-700 border-blue-200',
+    bgClassName: 'border-l-blue-500',
+    icon: <Clock className="size-3.5" />,
   },
   completed: {
     label: 'Completed',
-    className: 'bg-gray-100 text-gray-600 border-gray-200',
+    className: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    bgClassName: 'border-l-emerald-500',
+    icon: <BadgeCheck className="size-3.5" />,
   },
   cancelled: {
     label: 'Cancelled',
     className: 'bg-red-100 text-red-600 border-red-200',
+    bgClassName: 'border-l-red-500',
+    icon: <XCircle className="size-3.5" />,
   },
   'no-show': {
     label: 'No Show',
     className: 'bg-amber-100 text-amber-700 border-amber-200',
+    bgClassName: 'border-l-amber-500',
+    icon: <AlertCircle className="size-3.5" />,
   },
 };
 
@@ -71,7 +87,7 @@ export default function BookingCard({
   const isCancelling = cancellingId === booking.id;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md md:h-64 md:flex-row">
+    <article className="group relative flex flex-col overflow-hidden rounded-2xl border bg-white md:h-64 md:flex-row">
       {/* --- Image --- */}
       <div className="relative h-52 w-full shrink-0 overflow-hidden md:h-full md:w-64">
         <Image
@@ -81,20 +97,11 @@ export default function BookingCard({
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 256px"
         />
-        {/* Status badge */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-3">
-          <Badge
-            variant="outline"
-            className={`${config.className} pointer-events-auto w-fit border px-2.5 py-1 text-xs font-semibold`}
-          >
-            {config.label}
-          </Badge>
-        </div>
       </div>
 
       {/* --- Content --- */}
       <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5">
-        {/* Header: Title + Rating + Booking ID */}
+        {/* Header: Title + Rating + Booking ID + Status */}
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between gap-2">
@@ -104,9 +111,27 @@ export default function BookingCard({
               >
                 {hotel.name}
               </Link>
-              <span className="text-muted-foreground hidden shrink-0 text-[11px] sm:block">
-                {booking.id}
-              </span>
+              <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                <span className="text-muted-foreground text-[11px]">{booking.id}</span>
+                <Badge
+                  variant="outline"
+                  className={`${config.className} inline-flex items-center gap-1 border px-2 py-0.5 text-[10px] font-semibold`}
+                >
+                  {config.icon}
+                  {config.label}
+                </Badge>
+              </div>
+            </div>
+            {/* Mobile: show status below title */}
+            <div className="mt-1.5 flex items-center gap-2 sm:hidden">
+              <span className="text-muted-foreground text-[10px]">{booking.id}</span>
+              <Badge
+                variant="outline"
+                className={`${config.className} inline-flex items-center gap-1 border px-2 py-0.5 text-[10px] font-semibold`}
+              >
+                {config.icon}
+                {config.label}
+              </Badge>
             </div>
             <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs sm:text-sm">
               <span className="flex items-center gap-1">
@@ -174,7 +199,7 @@ export default function BookingCard({
           </div>
 
           {/* Price + Action */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
             <div className="text-right">
               <p className="text-muted-foreground text-[10px] sm:text-[11px]">Total paid</p>
               <p className="text-base font-bold sm:text-lg">{formatCurrency(booking.total)}</p>
@@ -182,9 +207,8 @@ export default function BookingCard({
 
             {variant === 'active' && booking.cancellable && onCancel && (
               <Button
-                variant="outline"
                 size="sm"
-                className="h-8 gap-1 border-red-200 px-2.5 text-xs text-red-600 hover:bg-red-50 hover:text-red-700 sm:h-9 sm:gap-1.5 sm:px-3 sm:text-sm"
+                className="h-8 gap-1 bg-red-600 px-2.5 text-xs text-white hover:bg-red-700 sm:h-9 sm:gap-1.5 sm:px-3 sm:text-sm"
                 onClick={() => onCancel(booking.id)}
                 disabled={isCancelling}
               >
@@ -196,7 +220,6 @@ export default function BookingCard({
             {variant === 'history' && status === 'completed' && (
               <Link href={`/hotels/${hotel.id}`}>
                 <Button
-                  variant="outline"
                   size="sm"
                   className="h-8 gap-1 px-2.5 text-xs sm:h-9 sm:gap-1.5 sm:px-3 sm:text-sm"
                 >

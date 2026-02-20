@@ -1,13 +1,13 @@
 'use client';
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 import SearchBar from '@/components/shared/searchbar/SearchBar';
 import {
   HotelCard,
   HotelCardSkeleton,
   HotelFilters,
-  HotelPagination,
   HotelSortBar,
 } from '@/components/modules/hotels';
 import { HOTELS, HOTELS_PER_PAGE, PRICE_BOUNDS } from '@/lib/constants/hotels-data';
@@ -84,7 +84,10 @@ function HotelsContent() {
     query: destinationCity,
   });
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
-  const [page, setPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(HOTELS_PER_PAGE);
+
+  // Ref for sentinel element observed for infinite scroll
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   // Debounce filters so the list doesn't re-render on every keystroke/slider drag
   const debouncedFilters = useDebounce(filters, 400);
@@ -141,12 +144,8 @@ function HotelsContent() {
     });
   }, [debouncedFilters, debouncedSortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredHotels.length / HOTELS_PER_PAGE));
-  const safePage = Math.min(page, totalPages);
-  const pageHotels = filteredHotels.slice(
-    (safePage - 1) * HOTELS_PER_PAGE,
-    safePage * HOTELS_PER_PAGE,
-  );
+  const displayedHotels = filteredHotels.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredHotels.length;
 
   const hasActiveFilters = useMemo(() => {
     return (
@@ -182,28 +181,46 @@ function HotelsContent() {
   const handleFilterChange = useCallback(
     <K extends keyof HotelFiltersState>(key: K, value: HotelFiltersState[K]) => {
       setFilters((prev) => ({ ...prev, [key]: value }));
-      setPage(1);
+      setVisibleCount(HOTELS_PER_PAGE);
     },
     [],
   );
 
   const handleSortChange = useCallback((value: SortOption) => {
     setSortBy(value);
-    setPage(1);
+    setVisibleCount(HOTELS_PER_PAGE);
   }, []);
 
   const handleClearFilters = useCallback(() => {
     setFilters(DEFAULT_FILTERS);
     setSortBy('recommended');
-    setPage(1);
+    setVisibleCount(HOTELS_PER_PAGE);
   }, []);
 
   /* ─── Effects ─────────────────────────────────────────── */
 
-  // Clamp page if filtered result set shrinks below current page
+  // Reset visible count when filtered results change
   useEffect(() => {
-    if (page !== safePage) setPage(safePage);
-  }, [page, safePage]);
+    setVisibleCount(HOTELS_PER_PAGE);
+  }, [debouncedFilters, debouncedSortBy]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          setVisibleCount((prev) => prev + HOTELS_PER_PAGE);
+        }
+      },
+      { rootMargin: '200px' },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, isLoading]);
 
   /* ─── Filters panel (shared desktop sidebar & mobile sheet) */
   const filtersPanel = (
@@ -259,7 +276,7 @@ function HotelsContent() {
             {/* Sort bar (includes mobile filter sheet) */}
             <HotelSortBar
               totalResults={filteredHotels.length}
-              visibleCount={pageHotels.length}
+              visibleCount={displayedHotels.length}
               sortBy={sortBy}
               onSortChange={handleSortChange}
               filtersPanel={filtersPanel}
@@ -273,7 +290,7 @@ function HotelsContent() {
                 ))}
 
               {!isLoading &&
-                pageHotels.map((hotel) => (
+                displayedHotels.map((hotel) => (
                   <HotelCard key={hotel.id} hotel={hotel} searchContext={searchContext} />
                 ))}
             </div>
@@ -285,14 +302,23 @@ function HotelsContent() {
               </div>
             )}
 
-            {/* Pagination */}
-            {filteredHotels.length > 0 && (
-              <HotelPagination
-                currentPage={safePage}
-                totalPages={totalPages}
-                onPageChange={setPage}
-              />
+            {/* Infinite scroll sentinel */}
+            {!isLoading && hasMore && (
+              <div ref={sentinelRef} className="flex items-center justify-center py-8">
+                <Loader2 className="text-primary size-6 animate-spin" />
+                <span className="text-muted-foreground ml-2 text-sm">Loading more hotels...</span>
+              </div>
             )}
+
+            {/* End-of-list indicator */}
+            {!isLoading &&
+              filteredHotels.length > 0 &&
+              !hasMore &&
+              displayedHotels.length > HOTELS_PER_PAGE && (
+                <div className="py-6 text-center text-xs text-slate-400">
+                  You&apos;ve seen all {filteredHotels.length} hotels
+                </div>
+              )}
           </div>
         </div>
       </section>

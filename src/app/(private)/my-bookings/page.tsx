@@ -1,17 +1,28 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { CalendarCheck, Calendar, Clock, AlertTriangle, Luggage } from 'lucide-react';
+import { CalendarCheck, Calendar, Clock, AlertTriangle, Luggage, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import PageHero from '@/components/shared/PageHero';
 import BookingCard, { BookingCardSkeleton } from '@/components/modules/bookings/BookingCard';
 import { ACTIVE_BOOKINGS, type Booking } from '@/lib/constants/bookings-data';
 
+type ActiveFilterTab = 'all' | 'confirmed' | 'checked-in' | 'cancelled';
+
+const ACTIVE_TABS: { value: ActiveFilterTab; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'confirmed', label: 'Confirmed' },
+  { value: 'checked-in', label: 'Checked In' },
+  { value: 'cancelled', label: 'Cancelled' },
+];
+
 export default function MyBookingsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<ActiveFilterTab>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Simulate fetching bookings
   useEffect(() => {
@@ -37,6 +48,26 @@ export default function MyBookingsPage() {
   const confirmed = bookings.filter((b) => b.status === 'confirmed');
   const checkedIn = bookings.filter((b) => b.status === 'checked-in');
   const cancelled = bookings.filter((b) => b.status === 'cancelled');
+
+  const filteredBookings = useMemo(() => {
+    let result = bookings;
+
+    if (activeTab !== 'all') {
+      result = result.filter((b) => b.status === activeTab);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (b) =>
+          b.hotel.name.toLowerCase().includes(q) ||
+          b.hotel.city.toLowerCase().includes(q) ||
+          b.id.toLowerCase().includes(q),
+      );
+    }
+
+    return result;
+  }, [bookings, activeTab, searchQuery]);
 
   return (
     <>
@@ -68,12 +99,63 @@ export default function MyBookingsPage() {
           />
         </div>
 
+        {/* Filter bar */}
+        <div className="mb-5 flex flex-col gap-3 rounded-xl border bg-white p-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:rounded-2xl sm:p-4">
+          {/* Tabs */}
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+            {ACTIVE_TABS.map((tab) => {
+              const count =
+                tab.value === 'all'
+                  ? bookings.length
+                  : tab.value === 'confirmed'
+                    ? confirmed.length
+                    : tab.value === 'checked-in'
+                      ? checkedIn.length
+                      : cancelled.length;
+              return (
+                <button
+                  key={tab.value}
+                  onClick={() => setActiveTab(tab.value)}
+                  className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition sm:gap-1.5 sm:px-3.5 sm:py-2 sm:text-sm ${
+                    activeTab === tab.value
+                      ? 'bg-primary text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {tab.label}
+                  <span
+                    className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${
+                      activeTab === tab.value
+                        ? 'bg-white/20 text-white'
+                        : 'bg-gray-200 text-gray-500'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search */}
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by hotel, city, or ID"
+              className="h-9 w-full rounded-lg border bg-gray-50 pr-4 pl-9 text-sm transition outline-none focus:border-gray-300 focus:ring-1 focus:ring-gray-200 sm:h-10"
+            />
+          </div>
+        </div>
+
         {/* Bookings list */}
         <div className="space-y-4 sm:space-y-5">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => <BookingCardSkeleton key={i} />)
-          ) : bookings.length > 0 ? (
-            bookings.map((booking) => (
+          ) : filteredBookings.length > 0 ? (
+            filteredBookings.map((booking) => (
               <BookingCard
                 key={booking.id}
                 booking={booking}
@@ -137,7 +219,7 @@ function EmptyState() {
         You don&apos;t have any upcoming bookings. Start exploring hotels and plan your next trip!
       </p>
       <Link
-        href="/hotels"
+        href="/"
         className="bg-primary hover:bg-primary/90 mt-5 inline-flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-medium text-white transition sm:mt-6 sm:px-6 sm:py-2.5"
       >
         <Calendar className="size-4" /> Explore Hotels

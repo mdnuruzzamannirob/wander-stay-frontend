@@ -11,7 +11,7 @@ const SHOW_DELAY_MS = 500;
 
 export default function Banner() {
   const hydrated = useHasHydrated();
-  const { hasChoice, set } = useCookiePreference();
+  const { hasChoice, set, setCustomPreferences } = useCookiePreference();
   const delayPassed = useDelayedFlag(hydrated && !hasChoice, SHOW_DELAY_MS);
 
   const showCookieBar = hydrated && !hasChoice && delayPassed;
@@ -76,7 +76,11 @@ export default function Banner() {
         </div>
       </div>
 
-      <CookieBar showCookieBar={showCookieBar} set={set} />
+      <CookieBar
+        showCookieBar={showCookieBar}
+        set={set}
+        setCustomPreferences={setCustomPreferences}
+      />
     </div>
   );
 }

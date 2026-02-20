@@ -71,7 +71,7 @@ export default function HotelSortBar({
         </SheetContent>
       </Sheet>
 
-      <div className="flex items-center gap-2">
+      <div className="f flex items-center gap-2">
         <Label className="whitespace-nowrap max-sm:hidden">Sort by</Label>
         <Select value={sortBy} onValueChange={(v) => onSortChange(v as SortOption)}>
           <SelectTrigger className="gap-2 shadow-none">
